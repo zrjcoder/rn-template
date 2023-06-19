@@ -4,11 +4,13 @@ import { TabView, SceneMap } from 'react-native-tab-view'
 import { withForwardedNavigationParams } from 'react-navigation-props-mapper'
 import { Box } from 'native-base'
 
-import { MainTabsScreenProps } from '../../../navigators/types'
+import { MainTabsScreenProps } from '@/navigators/types'
+import { History, List, Ongoing } from './Tabs'
 
 const renderScene = SceneMap({
-  first: FirstRoute,
-  second: SecondRoute,
+  list: List,
+  ongoing: Ongoing,
+  history: History,
 })
 
 export const Home = withForwardedNavigationParams<
@@ -18,8 +20,9 @@ export const Home = withForwardedNavigationParams<
 
   const [index, setIndex] = React.useState(0)
   const [routes] = React.useState([
-    { key: 'first', title: 'First' },
-    { key: 'second', title: 'Second' },
+    { key: 'list', title: '警情列表' },
+    { key: 'ongoing', title: '正在进行' },
+    { key: 'history', title: '历史警情' },
   ])
 
   return (
@@ -31,10 +34,3 @@ export const Home = withForwardedNavigationParams<
     />
   )
 })
-
-function FirstRoute() {
-  return <Box bg="primary.400">1</Box>
-}
-function SecondRoute() {
-  return <Box bg="warning.500">2</Box>
-}
