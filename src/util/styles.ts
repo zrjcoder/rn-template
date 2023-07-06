@@ -181,13 +181,4 @@ function positionVertical(position: ViewStyle['position']) {
   }
 }
 
-export {
-  size,
-  flex,
-  border,
-  padding,
-  margin,
-  font,
-  positionVertical,
-  positionHorizontal,
-}
+export { size, flex, border, padding, margin, font, positionVertical, positionHorizontal }

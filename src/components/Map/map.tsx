@@ -1,46 +1,70 @@
-import React from 'react'
-import { AMapSdk, MapView } from 'react-native-amap3d'
-import { PermissionsAndroid } from 'react-native'
+import React, { useState } from 'react'
+import { AMapSdk, MapView, MapType, Marker } from 'react-native-amap3d'
 import { init, Geolocation } from 'react-native-amap-geolocation'
 
+import { permission } from '@/util'
+
 export function Map() {
-  AMapSdk.init('560b0fd3d7a823553d20f732c357152d')
+  const [location, setLocation] = useState({
+    latitude: 30.5070073136859,
+    longitude: 114.2019264661436,
+  })
+
+  AMapSdk.init('4a4e97706301401efa5453cdfa432a1e')
 
   React.useEffect(() => {
-    location()
+    getLocation()
 
-    async function location() {
-      await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+    async function getLocation() {
+      await permission([
+        'android.permission.ACCESS_FINE_LOCATION',
+        'android.permission.ACCESS_COARSE_LOCATION',
       ])
 
       await init({
-        ios: '',
-        android: '560b0fd3d7a823553d20f732c357152d',
+        ios: '4a4e97706301401efa5453cdfa432a1e',
+        android: '4a4e97706301401efa5453cdfa432a1e',
       })
 
       Geolocation.getCurrentPosition(
         ({ coords }) => {
-          console.log(coords)
+          setLocation({
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+          })
         },
-        (error) => {
-          console.log(error)
-        }
+        () => {}
       )
     }
   }, [])
 
   return (
     <MapView
-      // mapType={MapType.Satellite}
+      mapType={MapType.Standard}
+      zoomControlsEnabled={false}
+      buildingsEnabled={true}
       initialCameraPosition={{
         target: {
-          latitude: 39.91095,
-          longitude: 116.37296,
+          latitude: location.latitude,
+          longitude: location.longitude,
         },
-        zoom: 8,
-      }}
-    />
+        zoom: 17,
+      }}>
+      <Marker position={{ latitude: location.latitude, longitude: location.longitude }} />
+      {/* <Polyline
+        width={5}
+        color="rgba(255, 0, 0, 0.5)"
+        points={[
+          {
+            latitude: 30.5928,
+            longitude: 114.3055,
+          },
+          {
+            latitude: 30.5948,
+            longitude: 114.3255,
+          },
+        ]}
+      /> */}
+    </MapView>
   )
 }

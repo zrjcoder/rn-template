@@ -1,14 +1,11 @@
 import React from 'react'
 import { SafeAreaView, StatusBar } from 'react-native'
-import {
-  NavigationContainer,
-  useNavigationContainerRef,
-} from '@react-navigation/native'
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import { MainTabs } from './MainTabs'
-import { Login } from '../screens/Login'
-import { Map } from '../components/Map'
+import { MainTabs, IncidentTabs } from './index'
+import { Login } from '@/screens/Login'
+import { Map } from '@/components/Map'
 import { RootStackParamList } from './types'
 
 const ApplicationNavigator = () => {
@@ -18,13 +15,24 @@ const ApplicationNavigator = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer ref={navigationRef}>
-        <StatusBar barStyle={'light-content'} />
-        <RootStack.Navigator>
+        <StatusBar animated={true} backgroundColor="#266EFF" barStyle={'light-content'} />
+        <RootStack.Navigator
+          screenOptions={{
+            animation: 'slide_from_right',
+            presentation: 'card',
+          }}>
           <RootStack.Screen name="Login" component={Login as any} />
           <RootStack.Screen name="Map" component={Map as any} />
+
           <RootStack.Screen
             name="MainTabs"
             component={MainTabs}
+            options={{ headerShown: false }}
+          />
+
+          <RootStack.Screen
+            name="IncidentTabs"
+            component={IncidentTabs}
             options={{ headerShown: false }}
           />
         </RootStack.Navigator>
