@@ -10,16 +10,16 @@ import { store, persistor } from './store'
 
 const App = () => {
   return (
-    <NativeBaseProvider>
-      <ApplicationNavigator />
-    </NativeBaseProvider>
-    // <Provider store={store}>
-    //   <PersistGate loading={null} persistor={persistor}>
-    //     <NativeBaseProvider>
-    //       <ApplicationNavigator />
-    //     </NativeBaseProvider>
-    //   </PersistGate>
-    // </Provider>
+    // <NativeBaseProvider>
+    //   <ApplicationNavigator />
+    // </NativeBaseProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NativeBaseProvider>
+          <ApplicationNavigator />
+        </NativeBaseProvider>
+      </PersistGate>
+    </Provider>
   )
 }
 

@@ -36,7 +36,7 @@ export const getItems = () => {
           id: 5,
         },
       ])
-    }, 1000)
+    }, 2000)
   })
 }
 
@@ -65,7 +65,7 @@ export const getHistoryItems = () => {
           id: 3,
         },
       ])
-    }, 1000)
+    }, 100000)
   })
 }
 
