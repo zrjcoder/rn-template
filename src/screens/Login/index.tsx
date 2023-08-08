@@ -1,7 +1,7 @@
 import React from 'react'
-import { View, Text, Button } from 'react-native'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { View, Text, Button, NativeModules } from 'react-native'
 
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { RootStackScreenProps } from '@/navigators/types'
 import { useLazyFetchOneQuery } from '@/services'
 
@@ -29,6 +29,14 @@ export function Login(props: RootStackScreenProps<'Login'>) {
             screen: 'Home',
             params: { name: 'Jane', id: 1 },
           })
+        }}
+      />
+
+      <Button
+        title="dudu"
+        onPress={() => {
+          NativeModules.ToastExample.show('dudu', NativeModules.ToastExample.SHORT)
+          NativeModules.ToastExample.showLocation()
         }}
       />
     </View>

@@ -40,16 +40,8 @@ public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-      // Uri uri = getIntent().getData();
-      // String data = "0";
-      // if (uri != null) {
-      //   data = uri.getQueryParameter("data");
-      // }
-      // if ("0".equals(data)) {
-      //   SplashScreen.show(this, true);
-      // }
       super.onCreate(savedInstanceState);
-      //加载讯飞语音sdk
+      // 加载讯飞语音sdk
       SpeechUtility.createUtility(this, Constant.IFlyTekAppId);
     }
 }

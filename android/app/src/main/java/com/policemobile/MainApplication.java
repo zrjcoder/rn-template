@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.policemobile.ocr.OCRReactPackage;
 import com.policemobile.iflytek.IFlyTekReactPackage;
+import com.policemobile.toast.CustomToastPackage;
 
 
 public class MainApplication extends Application implements ReactApplication {
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new MyReactNativePackage());
           packages.add(new IFlyTekReactPackage());
           packages.add(new OCRReactPackage());
+          packages.add(new CustomToastPackage());
 
           System.out.println("Package: " + packages);
 

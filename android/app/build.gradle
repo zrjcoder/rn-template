@@ -166,6 +166,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+    implementation("androidx.core:core-ktx:1.10.1")
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
@@ -178,11 +179,19 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
     // 讯飞 SDK 核心库文件
     implementation files('libs/Msc.jar')
+
     // 身份证扫描
     implementation files('libs/ocr-sdk.jar')
     implementation project(path: ':ocr_ui')
+
+//    // 高德地图 https://lbs.amap.com/api/android-navi-sdk/guide/create-project/cocoapods
+//    implementation "com.amap.api:3dmap:latest.integration" // 地图
+//    implementation "com.amap.api:search:latest.integration" // 搜索
+//    implementation "com.amap.api:location:latest.integration" // 定位
+//    implementation "com.amap.api:navi-3dmap:latest.integration" // 导航
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
@@ -191,4 +200,5 @@ project.ext.vectoricons = [
     iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf' ] // Name of the font files you want to copy
 ]
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+apply plugin: 'org.jetbrains.kotlin.android'
 
