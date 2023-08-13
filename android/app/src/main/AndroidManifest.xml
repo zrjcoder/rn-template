@@ -16,9 +16,6 @@
             android:maxSdkVersion="32"
             tools:ignore="ScopedStorage"/>
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -65,7 +62,7 @@
 
         <meta-data
                 android:name="com.amap.api.v2.apikey"
-                android:value="4a4e97706301401efa5453cdfa432a1e"/>
+                android:value="ce9fb1144d37e748d4e60ad01e3ddbdd"/>
         <service android:name="com.amap.api.location.APSService"/>
 
     </application>

@@ -10,9 +10,10 @@ import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
 
+import com.policemobile.calendar.CalendarPackage;
 import com.policemobile.ocr.OCRReactPackage;
 import com.policemobile.iflytek.IFlyTekReactPackage;
-import com.policemobile.toast.CustomToastPackage;
+import com.policemobile.map.AMapPackage;
 
 
 public class MainApplication extends Application implements ReactApplication {
@@ -32,7 +33,8 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new MyReactNativePackage());
           packages.add(new IFlyTekReactPackage());
           packages.add(new OCRReactPackage());
-          packages.add(new CustomToastPackage());
+          packages.add(new AMapPackage());
+          packages.add(new CalendarPackage());
 
           System.out.println("Package: " + packages);
 

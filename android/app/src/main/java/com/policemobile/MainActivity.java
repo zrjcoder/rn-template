@@ -2,6 +2,7 @@ package com.policemobile;
 
 import android.os.Bundle;
 
+import com.amap.api.location.AMapLocationClient;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
@@ -41,6 +42,10 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
+
+      AMapLocationClient.updatePrivacyAgree(getApplicationContext(), true);
+      AMapLocationClient.updatePrivacyShow(getApplicationContext(), true, true);
+
       // 加载讯飞语音sdk
       SpeechUtility.createUtility(this, Constant.IFlyTekAppId);
     }
