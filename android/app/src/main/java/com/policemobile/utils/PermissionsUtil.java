@@ -37,7 +37,7 @@ public class PermissionsUtil {
 
                         for (int grantResult : grantResults) {
                             if (grantResult != PackageManager.PERMISSION_GRANTED) {
-                                promise.reject("not Permissions", "没有授权！请到系统权限管理设置！");
+                                promise.reject("没有授权！请到系统权限管理设置！");
                                 return true;
                             }
                         }
