@@ -20,8 +20,8 @@ export function InfoHeader({ data, tag, rightButton, ...props }: InfoHeaderProps
             {data?.title}
           </Heading>
 
-          {data?.tags?.map((item) => (
-            <Tag text={item?.label} mr={2} />
+          {data?.tags?.map((item: any, index: any) => (
+            <Tag key={index} text={item?.label} mr={2} />
           ))}
         </HStack>
 

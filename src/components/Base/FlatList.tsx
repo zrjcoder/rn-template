@@ -25,7 +25,7 @@ export const FlatList = forwardRef<FlatListHandle, FlatListProps>(
     return (
       <List
         data={data}
-        keyExtractor={(_, index) => index.toString()}
+        keyExtractor={(item, index) => index.toString()}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         ListEmptyComponent={<Loading />}
         {...props}

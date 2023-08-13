@@ -33,6 +33,7 @@ export const Home = withForwardedNavigationParams<MainTabsScreenProps<'Home'>>()
       </Center>
 
       <TabView
+        // lazy
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
