@@ -13,10 +13,12 @@ import {
 } from 'redux-persist'
 import { MMKV } from 'react-native-mmkv'
 
+import user from './user'
 import { api } from '../services/api'
 
 const reducers = combineReducers({
   [api.reducerPath]: api.reducer,
+  user,
 })
 
 const storage = new MMKV()

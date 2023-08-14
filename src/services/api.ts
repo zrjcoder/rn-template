@@ -7,7 +7,15 @@ import {
 } from '@reduxjs/toolkit/query/react'
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.API_URL,
+  baseUrl: process.env.BASE_URL,
+  timeout: 10000,
+  prepareHeaders: (headers, { getState }) => {
+    const token = (getState() as any).user.token
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`)
+    }
+    return headers
+  },
 })
 
 const baseQueryWithInterceptor: BaseQueryFn<

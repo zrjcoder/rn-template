@@ -6,9 +6,17 @@ import { RootStackScreenProps } from '@/navigators/types'
 import { getItems } from '../api'
 import { FlatList, type FlatListHandle } from '@/components'
 import { IncidentItem } from '../components'
+import { useFetchIncidentListQuery } from '@/services'
 
 export const Incident = () => {
   const [dataSource, setDataSource] = useState([])
+
+  const { data, isLoading, isError, isSuccess } = useFetchIncidentListQuery({
+    condition: {
+      receiveStatus: 0,
+      feedBackStatus: 0,
+    },
+  })
 
   const listRef = useRef<FlatListHandle>(null)
 
