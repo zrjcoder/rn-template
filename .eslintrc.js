@@ -3,6 +3,7 @@ module.exports = {
   extends: ['@react-native-community', 'prettier'],
   rules: {
     'react-native/no-inline-styles': 0,
+    '@typescript-eslint/no-unused-vars': 1,
     'prettier/prettier': [
       'error',
       {
