@@ -8,6 +8,7 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
+import com.facebook.soloader.SoLoader;
 import com.policemobile.utils.Constant;
 import com.iflytek.cloud.SpeechUtility;
 
@@ -42,6 +43,7 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
+      SoLoader.init(this, false);
 
       AMapLocationClient.updatePrivacyAgree(getApplicationContext(), true);
       AMapLocationClient.updatePrivacyShow(getApplicationContext(), true, true);

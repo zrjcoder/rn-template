@@ -12,6 +12,5 @@ class CalendarModule(reactContext: ReactApplicationContext): ReactContextBaseJav
 
     @ReactMethod
     fun createCalendarEvent(name: String, location: String, callback: Callback) {
-            
     }
 }
