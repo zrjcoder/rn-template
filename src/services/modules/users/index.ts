@@ -12,7 +12,6 @@ export const userApi = api.injectEndpoints({
         body,
       }),
       transformResponse: (response: any) => {
-        console.log('dudu')
         const token = response?.data?.value ?? ''
         // const tokenType = response?.data?.tokenType ?? ''
 

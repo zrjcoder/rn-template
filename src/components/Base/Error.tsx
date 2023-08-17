@@ -2,7 +2,7 @@ import React from 'react'
 import { Box } from 'native-base'
 import Lottie from 'lottie-react-native'
 
-export function Loading() {
+export function Error() {
   return (
     <Box flex={1} justifyContent={'center'} alignItems={'center'}>
       <Lottie
@@ -12,8 +12,9 @@ export function Loading() {
           width: 300,
         }}
         autoPlay
-        source={require('@/assets/lottie/loading.json')}
+        source={require('@/assets/lottie/error.json')}
         loop
+        // ref={animationRef}
       />
     </Box>
   )

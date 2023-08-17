@@ -4,12 +4,12 @@ import { FooterButtons, InfoCard, InfoHeader, InfoContent } from './index'
 export function IncidentItem({
   item,
   rightPress,
-  centerPress,
+  centerButton,
   leftPress,
 }: {
   item: any
   rightPress: () => void
-  centerPress: () => void
+  centerButton: React.ReactNode
   leftPress: () => void
 }) {
   return (
@@ -44,7 +44,8 @@ export function IncidentItem({
           mt={6}
           mb={5}
           rightPress={rightPress}
-          centerPress={centerPress}
+          // centerPress={centerPress}
+          centerButton={centerButton}
           leftPress={leftPress}
         />
       }

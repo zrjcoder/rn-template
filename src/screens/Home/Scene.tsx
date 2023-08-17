@@ -1,25 +1,15 @@
 import React from 'react'
 import { Box, HStack, VStack, Text, Image, Center } from 'native-base'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
-import { RootStackScreenProps } from '@/navigators/types'
+import { RootStackScreenProps, IncidentTabsScreenProps } from '@/navigators/types'
 import { Map, Button } from '@/components'
 import { InfoCard, InfoHeader, InfoContent } from './components'
 
-const data = {
-  id: 1,
-  report: '张三',
-  recType: '扬言伤人',
-  desc: '在集宁区哈尔西街与工农南路辅路交叉路，有人扬言要伤害他人。目前无人员受伤，请求出警',
-  tel: '15623236209',
-  date: '2022-12-14 10:20:23',
-  address: '集宁区公安局',
-  recAddress: '乌兰察布市集宁区察哈尔西街与工农南路辅路交叉路口往西南约280米',
-  reportAddress: '乌兰察布市集宁区察哈尔西街与工农南路辅路交叉路口往西南约280米',
-}
-
 export function Scene() {
   const navigation = useNavigation<RootStackScreenProps<'IncidentTabs'>>()
+  const route = useRoute<IncidentTabsScreenProps<'Scene'>['route']>()
+  const data = route?.params?.data ?? {}
 
   return (
     <Box flex={1}>
@@ -30,7 +20,6 @@ export function Scene() {
           <InfoCard
             isExpand
             isHeaderBar
-            data={data}
             Header={
               <InfoHeader
                 data={{

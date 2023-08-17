@@ -20,7 +20,7 @@ export function InfoContent({ data, info, desc }: InfoContentProps) {
     <Box>
       <Desc desc={desc} />
 
-      <InfoReport mt={2} />
+      <InfoReport value={data?.name ?? ''} mt={2} />
       <InfoBox data={data} info={info} />
     </Box>
   )

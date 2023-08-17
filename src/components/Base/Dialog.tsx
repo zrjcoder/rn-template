@@ -4,6 +4,7 @@ import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primiti
 
 export type DialogProps = {
   title?: string
+  enableTouchClose?: boolean
   isHeader?: boolean
   isFooter?: boolean
   children?: React.ReactNode
@@ -11,20 +12,33 @@ export type DialogProps = {
 } & IModalProps
 
 export type DialogHandle = {
-  showDialog: () => void
-  closeDialog: () => void
+  showDialog: (callback?: () => void) => void
+  closeDialog: (callback?: () => void) => void
 }
 
 export const Dialog = React.forwardRef<DialogHandle, DialogProps>(
-  ({ title, isHeader = true, isFooter = true, styles, children, ...props }, ref) => {
+  (
+    {
+      title,
+      enableTouchClose = true,
+      isHeader = true,
+      isFooter = true,
+      styles,
+      children,
+      ...props
+    },
+    ref
+  ) => {
     const [showDialog, setShowDialog] = React.useState(false)
 
     React.useImperativeHandle(ref, () => ({
-      showDialog: () => {
+      showDialog: (callback = () => {}) => {
         setShowDialog(true)
+        callback()
       },
-      closeDialog: () => {
+      closeDialog: (callback = () => {}) => {
         setShowDialog(false)
+        callback()
       },
     }))
 
@@ -32,7 +46,11 @@ export const Dialog = React.forwardRef<DialogHandle, DialogProps>(
       <Center>
         <Modal
           isOpen={showDialog}
-          onClose={() => setShowDialog(false)}
+          onClose={() => {
+            if (enableTouchClose) {
+              setShowDialog(false)
+            }
+          }}
           {...props}
           avoidKeyboard>
           <Modal.Content width={'90%'} {...styles}>

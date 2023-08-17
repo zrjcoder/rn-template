@@ -14,12 +14,14 @@ export type RootStackScreenProps<T extends keyof RootStackParamList> =
   NativeStackNavigationProp<RootStackParamList, T>
 
 export type MainTabsParamList = {
-  Home: { name: string; id: number }
+  Home: undefined
+  Order: undefined
+  Work: undefined
   My: undefined
 }
 
 export type IncidentTabsParamList = {
-  Scene: undefined
+  Scene: { data: any }
   Case: undefined
   Detail: undefined
   Message: undefined
@@ -28,5 +30,5 @@ export type IncidentTabsParamList = {
 export type MainTabsScreenProps<T extends keyof MainTabsParamList> =
   ForwardedTabScreenProps<MainTabsParamList & RootStackParamList, T>
 
-export type IncidentTabsScreenProps<T extends keyof MainTabsParamList> =
+export type IncidentTabsScreenProps<T extends keyof IncidentTabsParamList> =
   ForwardedTabScreenProps<IncidentTabsParamList & RootStackParamList, T>

@@ -6,14 +6,15 @@ import { Dialog, type DialogProps, type DialogHandle } from '@/components'
 import { TButton } from '@/components/home'
 
 export type AlarmProps = {
+  title?: string
   onLeftPress: () => void
   onRightPress: () => void
 } & DialogProps
 
 export const Alarm = forwardRef<DialogHandle, AlarmProps>(
-  ({ onLeftPress, onRightPress, ...props }, ref) => {
+  ({ title = '标题', onLeftPress, onRightPress, ...props }, ref) => {
     return (
-      <Dialog title="已接收新警情" {...props} ref={ref}>
+      <Dialog title={title} {...props} ref={ref}>
         <Center my={8}>
           <Image
             h={'120px'}

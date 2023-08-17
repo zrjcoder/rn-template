@@ -5,7 +5,6 @@ import { Button } from '@/components'
 import { InfoCard, InfoHeader } from '@/components/home'
 
 export function HistoryItem({ item, onPress }: { item: any; onPress: () => void }) {
-  console.log(item)
   return (
     <Button isPressedStyle={false} isScale={true} scale={0.95} onPress={onPress}>
       <InfoCard

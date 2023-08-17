@@ -17,11 +17,16 @@ const ApplicationNavigator = () => {
       <NavigationContainer ref={navigationRef}>
         <StatusBar animated={true} backgroundColor="#266EFF" barStyle={'light-content'} />
         <RootStack.Navigator
+          initialRouteName="MainTabs"
           screenOptions={{
             animation: 'slide_from_right',
             presentation: 'card',
           }}>
-          <RootStack.Screen name="Login" component={Login as any} />
+          <RootStack.Screen
+            name="Login"
+            component={Login as any}
+            options={{ headerShown: false }}
+          />
           <RootStack.Screen name="Map" component={Map as any} />
 
           <RootStack.Screen

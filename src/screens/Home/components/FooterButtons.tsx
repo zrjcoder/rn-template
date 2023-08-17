@@ -7,13 +7,11 @@ export function FooterButtons({
   leftButton,
   leftPress,
   centerButton,
-  centerPress,
   rightButton,
   rightPress,
   ...props
 }: {
   leftPress?: () => void
-  centerPress?: () => void
   rightPress?: () => void
   leftButton?: React.ReactNode
   centerButton?: React.ReactNode
@@ -42,35 +40,7 @@ export function FooterButtons({
             </Button>
           )}
 
-          {centerButton || (
-            <Box>
-              <Button
-                isScale
-                onPress={centerPress}
-                style={{
-                  elevation: 10,
-                  shadowColor: '#FF2200',
-                  shadowOffset: {
-                    width: 0,
-                    height: 0,
-                  },
-                  shadowOpacity: 0.9,
-                  shadowRadius: 10,
-                }}>
-                <Center
-                  bg={'#FF2200'}
-                  borderRadius={'full'}
-                  px={4}
-                  py={1}
-                  _text={{
-                    color: '#FFFFFF',
-                    fontSize: 'lg',
-                  }}>
-                  立即接警
-                </Center>
-              </Button>
-            </Box>
-          )}
+          {centerButton}
 
           {rightButton || (
             <Button onPress={rightPress}>

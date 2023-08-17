@@ -4,7 +4,11 @@ import { Box, VStack, HStack, IBoxProps } from 'native-base'
 import { Tag, type DialogHandle } from '@/components'
 import { CardReport } from './Dialog'
 
-export function InfoReport({ ...props }: IBoxProps) {
+export function InfoReport({
+  title = '报  警  人：',
+  value,
+  ...props
+}: { title?: String; value: String } & IBoxProps) {
   const refDialog = React.useRef<DialogHandle>(null)
 
   return (
@@ -21,7 +25,7 @@ export function InfoReport({ ...props }: IBoxProps) {
               fontSize: 'sm',
               color: '#999999',
             }}>
-            {'报  警  人：'}
+            {title}
           </Box>
 
           <HStack
@@ -32,7 +36,7 @@ export function InfoReport({ ...props }: IBoxProps) {
               fontSize: 'sm',
               color: '#333333',
             }}>
-            <Box>张三</Box>
+            <Box>{value}</Box>
 
             <Tag
               mr={2}

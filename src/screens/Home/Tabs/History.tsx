@@ -14,14 +14,14 @@ export const History = () => {
   const navigation = useNavigation<RootStackScreenProps<'IncidentTabs'>>()
 
   const getData = () => {
-    getItems().then((res) => {
-      setDataSource(res)
-      listRef.current?.setRefreshing(false)
-    })
+    // getItems().then((res) => {
+    //   setDataSource(res)
+    //   listRef.current?.setRefreshing(false)
+    // })
   }
 
   useEffect(() => {
-    getData()
+    // getData()
   }, [])
 
   return (

@@ -1,22 +1,43 @@
 import { api } from '../../api'
 
+export type PoliceTypeProps =
+  | 'reach' // 到场
+  | 'receive' // 接警
+  | 'go' // 出警
+  | 'unGo' // 取消出警
+
 export const policeApi = api.injectEndpoints({
   endpoints: (build) => ({
-    fetchIncidentList: build.query({
+    // 警情列表数据
+    fetchTaskList: build.query<any, any>({
       query: (body) => ({
         url: '/visualization/jjdbGabAssociation/byPage',
         body: body,
         method: 'POST',
       }),
     }),
-    // fetchPoliceData: build.mutation({
-    //   query: (body) => ({
-    //     url: '/jjdbGabAssociation/byPage',
-    //     body,
-    //   }),
-    // }),
+
+    // 出警、接警、取消任务
+    updateTask: build.mutation<
+      any,
+      {
+        id: string
+        code: string
+        updateType: PoliceTypeProps
+      }
+    >({
+      query: ({ id, code, updateType }) => ({
+        url: '/visualization/jjdbGabDispatch/updateWithType',
+        body: {
+          gid: id,
+          jjdbh: code,
+          updateType,
+        },
+        method: 'PUT',
+      }),
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useFetchIncidentListQuery } = policeApi
+export const { useLazyFetchTaskListQuery, useUpdateTaskMutation } = policeApi

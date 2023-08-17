@@ -5,10 +5,11 @@ import {
   fetchBaseQuery,
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react'
+import { Toast } from '@/components'
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.BASE_URL,
-  timeout: 10000,
+  timeout: 3000,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as any).user.token
     if (token) {
@@ -24,7 +25,8 @@ const baseQueryWithInterceptor: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions)
-  if (result.error && result.error.status === 401) {
+  if (result.error && result.error.status === (401 || 404)) {
+    Toast.error('出错了！')
   }
   return result
 }
