@@ -4,6 +4,7 @@ module.exports = {
   rules: {
     'react-native/no-inline-styles': 0,
     '@typescript-eslint/no-unused-vars': 1,
+    '@typescript-eslint/no-shadow': 0,
     'prettier/prettier': [
       'error',
       {
