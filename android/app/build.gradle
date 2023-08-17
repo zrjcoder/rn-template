@@ -6,14 +6,6 @@ plugins {
     id("com.facebook.react")
 }
 
-//apply plugin: "com.facebook.react"
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
-
-project.ext.vectoricons = [
-        iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf' ] // Name of the font files you want to copy
-]
-
 react {}
 
 def enableSeparateBuildPerCPUArchitecture = false
@@ -46,7 +38,7 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include (*reactNativeArchitectures())
+            include(*reactNativeArchitectures())
         }
     }
     signingConfigs {
@@ -70,27 +62,12 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
-//    compileOptions {
-//        sourceCompatibility = JavaVersion.VERSION_1_8
-//        targetCompatibility = JavaVersion.VERSION_1_8
-//    }
-//    kotlinOptions {
-//        jvmTarget = "1.8"
-//        freeCompilerArgs += "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
-//    }
     buildFeatures {
         compose true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.7'
     }
-//    packagingOptions {
-//        resources {
-//            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-//        }
-//    }
-
-    // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
@@ -105,7 +82,6 @@ android {
 
         }
     }
-
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
@@ -116,31 +92,35 @@ android {
 dependencies {
     // jetpack compose 集成
     implementation(platform("androidx.compose:compose-bom:2023.05.01"))
-    implementation ("androidx.activity:activity-compose:1.7.2")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.runtime:runtime")
+    implementation("androidx.activity:activity-compose:1.7.2")
     implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.runtime:runtime")
+    implementation("androidx.compose.material3:material3")
     implementation("androidx.core:core-ktx:1.8.0")
-    implementation ("androidx.compose.ui:ui")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation ("androidx.compose.material:material-icons-extended:1.2.0")
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation("androidx.compose.material:material-icons-extended:1.2.0")
 
     // android三方库
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
+    implementation("io.github.ltttttttttttt:ComposeViews:1.4.0.9") // https://github.com/ltttttttttttt/ComposeViews
 
     // 本地
     implementation project(path: ':ocr_ui') // 身份证扫描UI
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     // RN
-    implementation ("com.airbnb.android:lottie:6.1.0")
-    implementation("com.facebook.react:react-android") // The version of react-native is set by the React Native Gradle Plugin
+    implementation("com.airbnb.android:lottie:6.1.0")
+    implementation("com.facebook.react:react-android")
+    // The version of react-native is set by the React Native Gradle Plugin
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    debugImplementation ("androidx.compose.ui:ui-tooling")
+    // Debug
+    debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
     if (hermesEnabled.toBoolean()) {
@@ -149,4 +129,11 @@ dependencies {
         implementation jscFlavor
     }
 }
+
+apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
+project.ext.vectoricons = [
+        iconFontNames: ['MaterialIcons.ttf', 'EvilIcons.ttf'] // Name of the font files you want to copy
+]
 
