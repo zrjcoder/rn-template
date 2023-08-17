@@ -1,56 +1,77 @@
 package com.policemobile.map
 
+import android.content.Context
+import android.view.View
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
-import com.facebook.react.uimanager.ViewGroupManager
+import com.facebook.react.uimanager.annotations.ReactProp
+import com.policemobile.R
 
-internal class MapViewManager : ViewGroupManager<MapView>() {
-//    private val commands = mapOf(
-//        "moveCamera" to { view: com.policemobile.map.MapView, args: ReadableArray? -> view.map.moveCamera(args as CameraUpdate) },
-////        "call" to { view: com.policemobile.map.MapView, args: ReadableArray? -> view.map. },
-//    )
+class MapViewManager : SimpleViewManager<View>() {
     override fun getName(): String {
-        return "HMapView"
+        return "MapView"
     }
 
-    override fun createViewInstance(reactContext: ThemedReactContext): MapView {
-        return MapView(reactContext)
+    override fun createViewInstance(reactContext: ThemedReactContext): View {
+        return createComposeView(reactContext)
     }
 
-    override fun onDropViewInstance(view: MapView) {
-        super.onDropViewInstance(view)
-        view.onDestroy()
+    private fun createComposeView(context: Context): View {
+        return ComposeView(context).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                MessageCard(message = "Hello Native Compose")
+            }
+        }
     }
 
-    override fun getExportedCustomBubblingEventTypeConstants(): Map<String, Any> {
-        return getEventTypeConstants(
-            "onLoad",
-        )
+    @ReactProp(name = "color")
+    fun setColor(view: View, color: String) {
+        view.setBackgroundColor(android.graphics.Color.parseColor(color))
+        view.setOnClickListener {
+
+        }
     }
 
-//
-//    override fun getCommandsMap(): MutableMap<String, Int>? {
-//        return commands.keys.mapIndexed { index, key ->
-//            key to index
-//        }.toMap().toMutableMap()
-//    }
-//
-//    override fun receiveCommand(root: com.policemobile.map.MapView, commandId: String?, args: ReadableArray?) {
-//        commands[commandId]?.invoke(root, args)
-//    }
-//
-//    override fun addView(mapView: com.policemobile.map.MapView?, child: View?, index: Int) {
-//        mapView?.addView(child)
-//        super.addView(mapView, child, index)
-//    }
-//
-//    override fun removeViewAt(parent: com.policemobile.map.MapView?, index: Int) {
-//        parent?.removeViewAt(index)
-//        super.removeViewAt(parent, index)
-//    }
-//
-//    @ReactProp(name = "initPosition")
-//    fun setInitPosition(view: com.policemobile.map.MapView, initPosition: ReadableArray) {
-////        view.map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(initPosition.getDouble(0), initPosition.getDouble(1)), 15f))
-//    }
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Preview
+    @Composable
+    private fun MessageCard(title: String = "default title", message: String = "default message") {
+        Card(
+            modifier = Modifier.size(height = 100.dp, width = 100.dp)
+        ) {
+            Image(
+                painter = painterResource(R.mipmap.ic_launcher_round),
+                contentDescription = null,
+            )
+
+            Column {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.padding(all = 6.dp),
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = message,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(all = 6.dp),
+                )
+            }
+        }
+    }
 }
-
