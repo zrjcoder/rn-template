@@ -1,7 +1,5 @@
 import React from 'react'
-import { Center, Text, StyledProps } from 'native-base'
-
-import { Button, type ButtonProps } from '@/components'
+import { StyledProps, Button, IButtonProps } from 'native-base'
 
 const themeStyles = {
   alarm: {
@@ -9,13 +7,13 @@ const themeStyles = {
     color: '#FFFFFF',
   },
   primary: {
-    bg: '#266EFF',
+    bg: '#0C6AF9',
     color: '#FFFFFF',
   },
   light: {
     bg: '#FFFFFF',
-    color: '#266EFF',
-    borderColor: '#266EFF',
+    color: '#0C6AF9',
+    borderColor: '#0C6AF9',
     borderWidth: 1,
   },
 }
@@ -23,40 +21,33 @@ const themeStyles = {
 export function TButton({
   theme = 'primary',
   children,
-  containerStyle,
-  textStyle,
+  textStyle = {},
   ...props
 }: {
   theme?: 'primary' | 'alarm' | 'light'
   textStyle?: StyledProps
   containerStyle?: StyledProps
-} & ButtonProps) {
+} & IButtonProps) {
   const themeStyle = themeStyles[theme]
 
   return (
     <Button
-      isScale
-      isPressedStyle={false}
       style={{
         elevation: 10,
-        shadowColor: themeStyle.bg || '#FFFFFF',
-        shadowOffset: {
-          width: 0,
-          height: 0,
-        },
-        shadowOpacity: 0.9,
-        shadowRadius: 10,
+        shadowColor: themeStyle.bg,
       }}
-      {...props}>
-      <Center borderRadius={'full'} px={5} py={1} {...themeStyle} {...containerStyle}>
-        <Text
-          color={themeStyle.color ? themeStyle.color : '#FFFFFF'}
-          fontSize={'md'}
-          textAlign={'center'}
-          {...textStyle}>
-          {children}
-        </Text>
-      </Center>
+      borderRadius={'full'}
+      _text={{
+        color: themeStyle.color ? themeStyle.color : '#FFFFFF',
+        ...textStyle,
+      }}
+      _pressed={{
+        bg: `${themeStyle.bg}99`,
+      }}
+      {...themeStyle}
+      {...props}
+      bg={themeStyle.bg}>
+      {children}
     </Button>
   )
 }

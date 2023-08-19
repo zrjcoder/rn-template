@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState } from 'react'
 import { useWindowDimensions } from 'react-native'
 import { TabView, TabBar } from 'react-native-tab-view'
 import { withForwardedNavigationParams } from 'react-navigation-props-mapper'
@@ -7,27 +7,41 @@ import { Box, Center, Text } from 'native-base'
 import { MainTabsScreenProps } from '@/navigators/types'
 import { History, Incident, Ongoing } from './Tabs'
 import { SearchBar } from '@/components'
+import { type TaskListParamsProps } from './components'
 
 export const Home = withForwardedNavigationParams<MainTabsScreenProps<'Home'>>()(() => {
   const layout = useWindowDimensions()
 
+  const [keyword, setKeyword] = useState('')
   const [index, setIndex] = useState(0)
-  const [routes] = useState([
+  const routes = [
     { key: 'incident', title: '警情列表' },
     { key: 'ongoing', title: '正在进行' },
     { key: 'history', title: '历史警情' },
-  ])
+  ]
+
+  const [params, setParams] = useState<TaskListParamsProps>({
+    keyword: '',
+    pageSize: 10,
+    pageNum: 1,
+  })
 
   return (
     <Box flex="1" backgroundColor={'#ffffff'}>
       <Center>
         <Box w={'90%'} mt={4}>
-          <SearchBar />
+          <SearchBar
+            onChangeText={setKeyword}
+            onEndEditing={() => {
+              setParams({
+                keyword,
+              })
+            }}
+          />
         </Box>
       </Center>
 
       <TabView
-        // lazy
         navigationState={{ index, routes }}
         renderScene={({ route }) => {
           return SceneMapComponent(route.key as any)
@@ -74,7 +88,7 @@ export const Home = withForwardedNavigationParams<MainTabsScreenProps<'Home'>>()
     const Component = components[name]
 
     if (Component) {
-      return <Component tab={index} />
+      return <Component params={params} />
     }
 
     return null

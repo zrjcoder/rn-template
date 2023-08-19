@@ -1,7 +1,7 @@
 import React from 'react'
 import { FooterButtons, InfoCard, InfoHeader, InfoContent } from './index'
 
-export function IncidentItem({
+export function TaskItem({
   item,
   rightPress,
   centerButton,

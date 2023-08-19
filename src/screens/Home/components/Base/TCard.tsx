@@ -12,7 +12,7 @@ type TCardProps = {
 export function TCard({ title, topButton, headerStyle, children, ...props }: TCardProps) {
   return (
     <Card py={3} {...props}>
-      <HStack alignItems={'center'} mb={3} {...headerStyle}>
+      <HStack alignItems={'center'} {...headerStyle}>
         <Divider
           mr={2}
           h={4}

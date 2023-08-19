@@ -3,7 +3,7 @@ import { SafeAreaView, StatusBar } from 'react-native'
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import { MainTabs, IncidentTabs } from './index'
+import { MainTabs, IncidentTabs, MyTabs } from './index'
 import { Login } from '@/screens/Login'
 import { Map } from '@/components/Map'
 import { RootStackParamList } from './types'
@@ -38,6 +38,12 @@ const ApplicationNavigator = () => {
           <RootStack.Screen
             name="IncidentTabs"
             component={IncidentTabs}
+            options={{ headerShown: false }}
+          />
+
+          <RootStack.Screen
+            name="MyTabs"
+            component={MyTabs}
             options={{ headerShown: false }}
           />
         </RootStack.Navigator>
