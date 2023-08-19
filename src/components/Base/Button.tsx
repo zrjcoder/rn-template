@@ -1,5 +1,5 @@
 import React from 'react'
-import { Pressable, IPressableProps, Box, IBoxProps } from 'native-base'
+import { Pressable, Box, IPressableProps, IBoxProps } from 'native-base'
 
 export type ButtonProps = {
   isScale?: boolean
@@ -12,7 +12,7 @@ export type ButtonProps = {
 export function Button({
   children,
   styles,
-  scale = 1.2,
+  scale = 1.1,
   isPressedStyle = true,
   isScale = false,
   ...props

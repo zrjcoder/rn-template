@@ -1,14 +1,21 @@
 import React from 'react'
 import { Box, Input, IInputProps } from 'native-base'
+import { ViewProps } from 'react-native'
 
 export type FormInputProps = {
   title: string
-  height: string
+  height?: string
+  style?: ViewProps
 } & IInputProps
 
-export function FormInput({ title = '标题', height = '44px', ...props }: FormInputProps) {
+export function FormInput({
+  title = '标题',
+  style = {},
+  height = '44px',
+  ...props
+}: FormInputProps) {
   return (
-    <Box width={'100%'}>
+    <Box width={'100%'} style={style}>
       <Input
         height={height as string}
         InputLeftElement={

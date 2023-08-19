@@ -38,8 +38,12 @@ export const Icons = {
   edit: Icon({
     source: require('@/assets/icons/edit.png'),
   }),
+  search: Icon({
+    source: require('@/assets/icons/search.png'),
+    size: '3',
+  }),
 }
 
-function Icon({ source }: IImageProps) {
-  return <Image source={source} size="4" resizeMode="contain" alt="icon" />
+function Icon({ source, size = 4 }: IImageProps) {
+  return <Image source={source} size={size} resizeMode="contain" alt="icon" />
 }
