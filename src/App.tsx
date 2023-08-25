@@ -8,11 +8,10 @@ import { PersistGate } from 'redux-persist/lib/integration/react'
 
 import { store, persistor } from './store'
 
+// import WebSocketManager from '@/ws/WebSocketManager'
+
 const App = () => {
   return (
-    // <NativeBaseProvider>
-    //   <ApplicationNavigator />
-    // </NativeBaseProvider>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <NativeBaseProvider>

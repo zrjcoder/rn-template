@@ -1,5 +1,5 @@
 import React, { ReactNode, forwardRef, useImperativeHandle } from 'react'
-import { Box, Center, Image, useDisclose, Collapse } from 'native-base'
+import { Box, Center, Image, useDisclose, Collapse, IBoxProps } from 'native-base'
 
 import { Card, Button } from '@/components'
 
@@ -12,7 +12,7 @@ export type InfoCardProps = {
   isHeaderBar?: boolean
   isExpand?: boolean
   onPress?: () => void
-}
+} & IBoxProps
 
 export type InfoCardHandle = {
   onToggle: () => void
@@ -30,6 +30,7 @@ export const InfoCard = forwardRef<InfoCardHandle, InfoCardProps>(
       isHeaderDivider = true,
       children,
       onPress,
+      ...props
     },
     ref
   ) => {
@@ -41,7 +42,7 @@ export const InfoCard = forwardRef<InfoCardHandle, InfoCardProps>(
     }))
 
     return (
-      <Wrapped isExpand={isExpand} onPress={onPress}>
+      <Wrapped isExpand={isExpand} onPress={onPress} {...props}>
         {Header && (
           <>
             {Header}
@@ -73,6 +74,7 @@ function Wrapped({
   isExpand,
   children,
   onPress,
+  ...props
 }: {
   children: ReactNode
   onPress?: () => void
@@ -80,14 +82,14 @@ function Wrapped({
 }) {
   if (isExpand) {
     return (
-      <Card px="0">
+      <Card px="0" {...props}>
         <Button onPress={onPress} isPressedStyle={!!onPress}>
           <Box px={3}>{children}</Box>
         </Button>
       </Card>
     )
   } else {
-    return <Card>{children}</Card>
+    return <Card px="0">{children}</Card>
   }
 }
 

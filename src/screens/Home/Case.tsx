@@ -21,8 +21,8 @@ export function Case() {
 
       <FormCase ref={formCaseRef} />
 
-      <TCard title={'现场图片'}>
-        <FormVoice ref={formVoiceRef} mt={-3} />
+      <TCard title={'处置结果'}>
+        <FormVoice ref={formVoiceRef} />
       </TCard>
 
       <Box size={12} />

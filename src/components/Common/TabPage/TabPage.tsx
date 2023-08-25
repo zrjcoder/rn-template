@@ -18,7 +18,7 @@ export type TabsProps = {
 }[]
 
 export type TabViewProps = {
-  onLoad: (props: { setTabs: (tabs: TabsProps) => void }) => void
+  onLoad?: (props: { setTabs: (tabs: TabsProps) => void }) => void
   routeScene: {
     key: string
     title: string

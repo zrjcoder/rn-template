@@ -5,6 +5,12 @@ import { IFlatListProps } from 'native-base/lib/typescript/components/basic/Flat
 
 import { Loading } from '@/components'
 
+export type FlatListParamsProps = {
+  keyword?: string
+  pageSize?: number
+  pageNum?: number
+}
+
 export type FlatListProps = IFlatListProps<any> & {
   data: any[]
   isFetching?: boolean

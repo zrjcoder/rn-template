@@ -6,6 +6,7 @@ export type RootStackParamList = {
   MainTabs: NavigatorScreenParams<MainTabsParamList>
   IncidentTabs: NavigatorScreenParams<IncidentTabsParamList>
   MyTabs: NavigatorScreenParams<MyTabsParamList>
+  OrderTabs: NavigatorScreenParams<OrderTabsParamList>
   Login: undefined
   Map: undefined
   NotFound: undefined
@@ -42,11 +43,32 @@ export type MyTabsParamList = {
   Filter: undefined
 }
 
+// 指令下页面路由
+export type OrderTabsParamList = {
+  // 合作作战
+  TogetherAgainFeedback: undefined
+  TogetherRead: undefined
+  TogetherReceive: undefined
+  TogetherFeedback: undefined
+  // 重点人员
+  PersonnelFeedback: undefined
+  PersonnelReceive: undefined
+  // 逃跑人员
+  RunFeedback: undefined
+  RunReceive: undefined
+  // 智能预警
+  WarningFeedback: undefined
+  WarningReceive: undefined
+}
+
 export type MainTabsScreenProps<T extends keyof MainTabsParamList> =
   ForwardedTabScreenProps<MainTabsParamList & RootStackParamList, T>
 
 export type IncidentTabsScreenProps<T extends keyof IncidentTabsParamList> =
   ForwardedTabScreenProps<IncidentTabsParamList & RootStackParamList, T>
+
+export type OrderTabsScreenProps<T extends keyof OrderTabsParamList> =
+  ForwardedTabScreenProps<OrderTabsScreenProps & RootStackParamList, T>
 
 export type MyTabsScreenProps<T extends keyof MyTabsParamList> = ForwardedTabScreenProps<
   MyTabsParamList & RootStackParamList,

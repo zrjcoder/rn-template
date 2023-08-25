@@ -10,10 +10,10 @@ import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
 
-import com.policemobile.calendar.CalendarPackage;
 import com.policemobile.ocr.OCRReactPackage;
 import com.policemobile.iflytek.IFlyTekReactPackage;
 import com.policemobile.map.AMapPackage;
+import com.policemobile.ui.UiPackage;
 
 
 public class MainApplication extends Application implements ReactApplication {
@@ -34,7 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
           packages.add(new IFlyTekReactPackage());
           packages.add(new OCRReactPackage());
           packages.add(new AMapPackage());
-          packages.add(new CalendarPackage());
+          packages.add(new UiPackage());
 
           System.out.println("Package: " + packages);
 

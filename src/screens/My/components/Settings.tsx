@@ -3,8 +3,8 @@ import { Divider, HStack, Image, Text, VStack } from 'native-base'
 import { ImageSourcePropType, TouchableNativeFeedback } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
-import { Icons } from '@/components'
 import { type MyTabsParamList, type RootStackScreenProps } from '@/navigators/types'
+import { Icons } from '@/components'
 
 export type SettingProps = {
   title: string
@@ -23,6 +23,7 @@ export function Settings({ settings }: { settings: SettingProps[] }) {
           onPress={() => {
             switch (setting.route) {
               case 'Logout':
+                navigation.navigate('Login')
                 break
 
               default:

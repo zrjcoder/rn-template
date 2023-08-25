@@ -3,7 +3,7 @@ import { SafeAreaView, StatusBar } from 'react-native'
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import { MainTabs, IncidentTabs, MyTabs } from './index'
+import { MainTabs, IncidentTabs, MyTabs, OrderTabs } from './index'
 import { Login } from '@/screens/Login'
 import { Map } from '@/components/Map'
 import { RootStackParamList } from './types'
@@ -17,7 +17,7 @@ const ApplicationNavigator = () => {
       <NavigationContainer ref={navigationRef}>
         <StatusBar animated={true} backgroundColor="#266EFF" barStyle={'light-content'} />
         <RootStack.Navigator
-          initialRouteName="MainTabs"
+          initialRouteName="Login"
           screenOptions={{
             animation: 'slide_from_right',
             presentation: 'card',
@@ -44,6 +44,12 @@ const ApplicationNavigator = () => {
           <RootStack.Screen
             name="MyTabs"
             component={MyTabs}
+            options={{ headerShown: false }}
+          />
+
+          <RootStack.Screen
+            name="OrderTabs"
+            component={OrderTabs}
             options={{ headerShown: false }}
           />
         </RootStack.Navigator>

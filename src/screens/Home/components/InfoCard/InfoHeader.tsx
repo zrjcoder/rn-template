@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, HStack, Heading, IBoxProps } from 'native-base'
 
-import { Tag } from '@/components'
+import { Tag, TBox } from '@/components'
 
 export type InfoHeaderProps = IBoxProps & {
   data: any
@@ -11,7 +11,7 @@ export type InfoHeaderProps = IBoxProps & {
 
 export function InfoHeader({ data, tag, rightButton, ...props }: InfoHeaderProps) {
   return (
-    <Box mt={4} mb={4} {...props}>
+    <TBox py={4} {...props}>
       <HStack justifyContent={'space-between'}>
         <HStack>
           {tag && <Tag text={tag} mr={1} />}
@@ -44,6 +44,6 @@ export function InfoHeader({ data, tag, rightButton, ...props }: InfoHeaderProps
           {data?.date}
         </Box>
       </HStack>
-    </Box>
+    </TBox>
   )
 }

@@ -47,10 +47,11 @@ export function MyTabs() {
         name="Car"
         component={Car}
         options={{
-          headerTitle: '车辆识别',
+          headerTitle: '车辆查询',
           ...headerStyles,
         }}
       />
+
       <Tab.Screen
         name="Filter"
         component={Filter}

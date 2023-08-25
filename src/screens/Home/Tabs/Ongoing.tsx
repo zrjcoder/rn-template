@@ -6,7 +6,14 @@ import { type DialogHandle } from '@/components'
 import { useLazyFetchTaskListQuery } from '@/services'
 import { Alarm, Immediate, type ImmediateResHandle } from '../components/Dialog'
 
+import { useNavigation } from '@react-navigation/native'
+
+import { type MyTabsParamList, type RootStackScreenProps } from '@/navigators/types'
+import { executeAfterDelay } from '@/util'
+
 export const Ongoing = ({ params }: { params: TaskListParamsProps }) => {
+  const navigation = useNavigation<RootStackScreenProps<'MyTabs'>>()
+
   const alarmDialogRef = useRef<DialogHandle>(null)
   const immediateDialogRef = useRef<ImmediateResHandle>(null)
   const taskListRef = useRef<TaskListHandle>(null)
@@ -35,8 +42,14 @@ export const Ongoing = ({ params }: { params: TaskListParamsProps }) => {
         ref={taskListRef}
         getData={getData}
         result={result}
-        onItemPress={() => {
-          taskListRef.current?.updateTaskStatus('receive')
+        onItemPress={(item: any) => {
+          const status = item?.status as Number
+          taskListRef.current?.updateTaskStatus('go')
+          executeAfterDelay(() => {
+            navigation.navigate('IncidentTabs', {
+              screen: 'Scene',
+            })
+          })
         }}
       />
     </Box>

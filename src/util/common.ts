@@ -56,6 +56,6 @@ export function convertTimeToSeconds(time: string) {
   return totalSeconds
 }
 
-export function executeAfterDelay(callback: () => void, delayMs: number = 3000): void {
+export function executeAfterDelay(callback: () => void, delayMs: number = 1000): void {
   setTimeout(callback, delayMs)
 }

@@ -6,8 +6,7 @@ import { Box, Center, Text } from 'native-base'
 
 import { MainTabsScreenProps } from '@/navigators/types'
 import { History, Incident, Ongoing } from './Tabs'
-import { SearchBar } from '@/components'
-import { type TaskListParamsProps } from './components'
+import { SearchBar, type FlatListParamsProps } from '@/components'
 
 export const Home = withForwardedNavigationParams<MainTabsScreenProps<'Home'>>()(() => {
   const layout = useWindowDimensions()
@@ -20,7 +19,7 @@ export const Home = withForwardedNavigationParams<MainTabsScreenProps<'Home'>>()
     { key: 'history', title: '历史警情' },
   ]
 
-  const [params, setParams] = useState<TaskListParamsProps>({
+  const [params, setParams] = useState<FlatListParamsProps>({
     keyword: '',
     pageSize: 10,
     pageNum: 1,

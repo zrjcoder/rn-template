@@ -1,9 +1,9 @@
 import { api } from '../../api'
 
 export type PoliceTypeProps =
-  | 'reach' // 到场
   | 'receive' // 接警
   | 'go' // 出警
+  | 'reach' // 到场
   | 'unGo' // 取消出警
 
 export const policeApi = api.injectEndpoints({

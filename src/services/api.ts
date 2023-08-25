@@ -8,8 +8,12 @@ import {
 import { Toast } from '@/components'
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.BASE_URL,
-  timeout: 3000,
+  baseUrl:
+    // process.env.NODE_ENV === 'development' ? process.env.BASE_URL : process.env.BUILD_URL,
+    // process.env.BASE_URL,
+    'http://172.19.46.100:18805/',
+  // 'http://26.152.201.150:18805/',
+  timeout: 15000,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as any).user.token
     if (token) {

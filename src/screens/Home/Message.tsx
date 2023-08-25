@@ -1,71 +1,55 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Box, Image, VStack } from 'native-base'
+import React, { useState } from 'react'
+import { Box, Center } from 'native-base'
+import { useSelector } from 'react-redux'
 
-import { getItems } from './api'
-import { FlatList, type FlatListHandle, InfoBox } from '@/components'
-import { ExpandItem, EmbedTCard, ReportInfo } from '@/components/home'
+import { TabPage, SearchBar, type FlatListParamsProps } from '@/components'
+import { type UserState } from '@/store/user'
+import { MessageList } from './Message/MessageList'
 
-export const Message = () => {
-  const [dataSource, setDataSource] = useState([])
+export function Message() {
+  const messageTypes = useSelector(
+    (state: { user: UserState }) => state.user.messageTypes
+  )
 
-  const listRef = useRef<FlatListHandle>(null)
+  const routes = messageTypes
+    .filter((item) => item.type === 'item')
+    .map((item) => ({
+      key: item.code,
+      title: item.value,
+      type: item.type,
+    }))
+  routes.unshift({
+    key: 'All',
+    title: '全部',
+  })
 
-  const getData = () => {
-    getItems().then((res) => {
-      setDataSource(res)
-      listRef.current?.setRefreshing(false)
-    })
-  }
-
-  useEffect(() => {
-    getData()
-  }, [])
+  const [keyword, setKeyword] = useState('')
+  const [params, setParams] = useState<FlatListParamsProps>({
+    keyword: '',
+    pageSize: 10,
+    pageNum: 1,
+  })
 
   return (
-    <Box flex={1} bg="#F5F7F9">
-      <FlatList
-        ref={listRef}
-        data={dataSource}
-        renderItem={({ item }) => (
-          <ExpandItem item={item}>
-            <Content />
-          </ExpandItem>
-        )}
+    <Box flex="1" backgroundColor={'#ffffff'}>
+      <Center>
+        <Box w={'90%'} mt={4}>
+          <SearchBar
+            onChangeText={setKeyword}
+            onEndEditing={() => {
+              setParams({ keyword })
+            }}
+          />
+        </Box>
+      </Center>
+
+      <TabPage
+        routeScene={routes}
+        renderScene={({ route }) => {
+          console.log(route)
+          return <MessageList params={params} status={route.key} />
+        }}
       />
     </Box>
-  )
-}
-
-function Content() {
-  return (
-    <VStack>
-      <EmbedTCard title="案件信息">
-        <InfoBox
-          data={{
-            date: '2023.05.12',
-            address: '集宁区火车站入口处',
-            type: '人脸识别',
-          }}
-          info={{
-            date: '预警时间',
-            address: '预警地点',
-            type: '预警方式',
-          }}
-        />
-
-        <Image
-          mt={4}
-          w={'100%'}
-          h={'160px'}
-          resizeMode="cover"
-          source={require('@/assets/images/modal-top.png')}
-          alt="image"
-        />
-      </EmbedTCard>
-
-      <EmbedTCard title="基本信息" mb={4}>
-        <ReportInfo mt={3} />
-      </EmbedTCard>
-    </VStack>
   )
 }

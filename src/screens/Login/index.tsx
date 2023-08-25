@@ -19,8 +19,31 @@ import { RootStackScreenProps } from '@/navigators/types'
 import { useAuthorizeMutation } from '@/services'
 import { setToken } from '@/store/user'
 import { Card, Icons, Toast } from '@/components'
-
+let ws = null
 export function Login() {
+  React.useEffect(() => {
+    ws = new WebSocket(
+      // 'ws://172.19.45.72:29099?token=6b48baee-10ed-41a6-a1c8-22fa54eb95b4'
+      'http://172.19.45.72:18455/auth/service/websocket/1234'
+    )
+
+    console.log(ws.readyState)
+
+    ws.addEventListener('open', function (event) {
+      console.log('open: ', event)
+    })
+
+    ws.addEventListener('close', (event) => {
+      console.log('close: ', event)
+    })
+
+    ws.addEventListener('error', (event) => {
+      console.log('error: ', event)
+    })
+    ws.addEventListener('message', (event) => {
+      console.log('message: ', event)
+    })
+  }, [])
   const navigation = useNavigation<RootStackScreenProps<'Login'>>()
 
   const [showPwd, setShowPwd] = React.useState(false)
@@ -60,6 +83,12 @@ export function Login() {
           resizeMode="contain"
         />
         <Card>
+          <Button
+            onPress={() => {
+              console.log(ws)
+            }}>
+            dudu
+          </Button>
           <IconInput
             value={state.userName}
             InputLeftElement={Icons.avatar}

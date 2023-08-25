@@ -9,9 +9,9 @@ import com.facebook.react.uimanager.ViewManager
 class AMapPackage : ReactPackage {
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
         return listOf(
-//            MapViewManager(),
+            MapViewManager(),
 //            ReactImageManager(reactContext),
-            RButtonManager(),
+//            RButtonManager(),
         )
     }
 

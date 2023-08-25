@@ -8,12 +8,6 @@ import { useUpdateTaskMutation, type PoliceTypeProps } from '@/services'
 import { TaskItem, CenterButton } from '.'
 import { convertIncidentDataToShow } from '@/util'
 
-export type TaskListParamsProps = {
-  keyword?: string
-  pageSize?: number
-  pageNum?: number
-}
-
 type TaskListProps = {
   result: any
   getData: (params?: TaskListParamsProps) => void
@@ -63,7 +57,7 @@ export const TaskList = forwardRef(
                   onPress={() => {
                     console.log(item, data, currentItem)
                     setCurrentItem(item)
-                    onItemPress()
+                    onItemPress(item)
                   }}>
                   立即出警
                 </CenterButton>
