@@ -151,7 +151,7 @@ export function Login() {
         </Box>
       </VStack>
 
-      <HStack
+      {/* <HStack
         width={'100%'}
         position={'absolute'}
         bottom={10}
@@ -164,7 +164,7 @@ export function Login() {
           }}>
           找回密码
         </Link>
-      </HStack>
+      </HStack> */}
     </Box>
   )
 

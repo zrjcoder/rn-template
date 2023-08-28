@@ -1,22 +1,28 @@
 import React from 'react'
 import { Box, HStack, VStack, IBoxProps, ITextProps, Divider } from 'native-base'
 
-export function InfoBox({
-  data,
-  info,
-  textStyle,
-  infoStyle,
-  isDivider = false,
-  rightStyle = {},
-  ...props
-}: {
+export type InfoBoxProps = {
   data: Record<string, any>
   info: Record<string, string>
   infoStyle?: IBoxProps
   textStyle?: ITextProps
   rightStyle?: IBoxProps
+  leftWidth?: string
+  rightWidth?: string
   isDivider?: boolean
-} & IBoxProps) {
+} & IBoxProps
+
+export function InfoBox({
+  data,
+  info,
+  textStyle,
+  infoStyle,
+  leftWidth = '27%',
+  rightWidth = '75%',
+  isDivider = false,
+  rightStyle = {},
+  ...props
+}: InfoBoxProps) {
   const keys = Object.keys(info ?? {})
 
   if (keys?.length === 0) {
@@ -31,7 +37,7 @@ export function InfoBox({
             <VStack key={key}>
               <HStack mt={2} justifyContent={'flex-start'} {...infoStyle}>
                 <Box
-                  width={'27%'}
+                  width={leftWidth}
                   flexDirection="row"
                   justifyContent="space-between"
                   _text={{
@@ -43,8 +49,8 @@ export function InfoBox({
                 </Box>
 
                 <Box
-                  width={'75%'}
-                  maxWidth={'75%'}
+                  width={typeof data[key] === 'object' ? {} : rightWidth}
+                  maxWidth={rightWidth}
                   justifyContent={'center'}
                   {...rightStyle}
                   _text={{

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Center } from 'native-base'
 import { Card, FormInput, type FormInputProps } from '@/components'
-import { TButton } from '../Home/components'
+import { TButton } from '../Incident/components'
 
 export function Password() {
   return (

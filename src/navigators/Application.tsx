@@ -4,7 +4,7 @@ import { NavigationContainer, useNavigationContainerRef } from '@react-navigatio
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { MainTabs, IncidentTabs, MyTabs, OrderTabs } from './index'
-import { Login } from '@/screens/Login'
+import { Login, Message } from '@/screens'
 import { Map } from '@/components/Map'
 import { RootStackParamList } from './types'
 
@@ -27,6 +27,13 @@ const ApplicationNavigator = () => {
             component={Login as any}
             options={{ headerShown: false }}
           />
+
+          <RootStack.Screen
+            name="Message"
+            component={Message as any}
+            options={{ headerShown: false }}
+          />
+
           <RootStack.Screen name="Map" component={Map as any} />
 
           <RootStack.Screen

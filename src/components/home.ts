@@ -1,1 +1,1 @@
-export * from '@/screens/Home/components'
+export * from '@/screens/Incident/components'

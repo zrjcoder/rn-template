@@ -1,10 +1,16 @@
 import React from 'react'
-import { Box } from 'native-base'
 
-import { InfoCardHandle, type InfoCardProps } from '@/components/home'
+import { TCard } from '@/components/home'
+import { IBoxProps } from 'native-base'
 
-export type OrderCardProps = {} & InfoCardProps
-
-export function OrderCard({}: OrderCardProps) {
-  return <InfoCardHandle Header={} />
+export function OrderCard({
+  children,
+  title,
+  ...props
+}: { title: string; children: React.ReactNode } & IBoxProps) {
+  return (
+    <TCard title={title} style={{}} px={0} py={0} mt={0} mb={1} {...props}>
+      {children}
+    </TCard>
+  )
 }

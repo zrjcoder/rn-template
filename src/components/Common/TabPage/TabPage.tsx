@@ -28,41 +28,51 @@ export type TabViewProps = {
   renderScene: (props: SceneRendererProps & { route: { key: string } }) => React.ReactNode
 } & IBoxProps
 
-export function TabPage({
-  onLoad = () => {},
-  routeScene,
-  renderScene,
-  pagerStyle = {},
-  ...props
-}: TabViewProps) {
-  const [index, setIndex] = useState(0)
-  const [tabs, setTabs] = useState<TabsProps>([])
-  const [routes] = useState(routeScene)
-
-  useEffect(() => {
-    onLoad({ setTabs })
-  }, [onLoad])
-
-  return (
-    <Box flex={1} bg="#ffffff" shadow={0} borderRadius={5} {...props}>
-      <DefaultTabView
-        style={{
-          borderRadius: 5,
-        }}
-        onSwipeEnd={() => {
-          onLoad({ setTabs })
-        }}
-        navigationState={{ index, routes } as any}
-        onIndexChange={setIndex}
-        renderTabBar={DefaultTabBar}
-        renderScene={renderScene}
-        pagerStyle={pagerStyle}
-      />
-    </Box>
-  )
+export type TabPageHandle = {
+  // setTabs: (tabs: TabsProps) => void
+  tabs: TabsProps
+  setMessageRoutes: (route: any) => void
 }
 
-function DefaultTabBar(props) {
+export const TabPage = React.forwardRef<TabPageHandle, TabViewProps>(
+  ({ onLoad = () => {}, routeScene, renderScene, pagerStyle = {}, ...props }, ref) => {
+    const [index, setIndex] = useState(0)
+    const [tabs, setTabs] = useState<TabsProps>([])
+    const [routes, setRoutes] = useState(routeScene)
+
+    useEffect(() => {
+      onLoad({ setTabs })
+    }, [onLoad])
+
+    React.useImperativeHandle(ref, () => ({
+      tabs: tabs,
+      setMessageRoutes: (route: any) => {
+        setRoutes(route)
+      },
+    }))
+
+    return (
+      <Box flex={1} bg="#ffffff" shadow={0} borderRadius={5} {...props}>
+        <DefaultTabView
+          lazy
+          style={{
+            borderRadius: 5,
+          }}
+          onSwipeEnd={() => {
+            onLoad({ setTabs })
+          }}
+          navigationState={{ index, routes } as any}
+          onIndexChange={setIndex}
+          renderTabBar={DefaultTabBar}
+          renderScene={renderScene}
+          pagerStyle={pagerStyle}
+        />
+      </Box>
+    )
+  }
+)
+
+function DefaultTabBar(props: any) {
   const layout = useWindowDimensions()
 
   return (
@@ -71,6 +81,7 @@ function DefaultTabBar(props) {
       {...props}
       style={{
         backgroundColor: '#ffffff',
+        paddingRight: 20,
       }}
       renderLabel={({ route, focused }) => (
         <Text

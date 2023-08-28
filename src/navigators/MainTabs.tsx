@@ -5,7 +5,7 @@ import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
 } from '@react-navigation/bottom-tabs'
-import { Home, My, Order, Work } from '../screens'
+import { Home, Incident, My, Order } from '../screens'
 import { MainTabsParamList } from './types'
 import { HeaderButton } from './IncidentTabs/HeaderButton'
 
@@ -31,10 +31,30 @@ const tabBarLabelStyle = {
 
 export function MainTabs() {
   return (
-    <Tab.Navigator initialRouteName="My">
+    <Tab.Navigator initialRouteName="Home">
       <Tab.Screen
         name="Home"
         component={Home}
+        options={{
+          tabBarLabel: '首页',
+          headerTitle: '首页',
+          ...headerStyles,
+          tabBarLabelStyle,
+          headerRight: HeaderButton,
+          tabBarIcon: ({ focused, size }) =>
+            focused ? (
+              <TabBarIcon
+                size={size}
+                source={require('@/assets/tab/police-active.png')}
+              />
+            ) : (
+              <TabBarIcon size={size} source={require('@/assets/tab/police.png')} />
+            ),
+        }}
+      />
+      <Tab.Screen
+        name="Incident"
+        component={Incident}
         options={{
           tabBarLabel: '警情',
           headerTitle: '警情',
@@ -68,7 +88,7 @@ export function MainTabs() {
             ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Work"
         component={Work}
         options={{
@@ -83,7 +103,7 @@ export function MainTabs() {
               <TabBarIcon size={size} source={require('@/assets/tab/work.png')} />
             ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="My"
         component={My}

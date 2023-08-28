@@ -20,6 +20,9 @@ export const Icons = {
   filter: Icon({
     source: require('@/assets/icons/filter.png'),
   }),
+  filterLight: Icon({
+    source: require('@/assets/icons/filter-light.png'),
+  }),
   key: Icon({
     source: require('@/assets/icons/key.png'),
   }),
@@ -40,6 +43,14 @@ export const Icons = {
   }),
   search: Icon({
     source: require('@/assets/icons/search.png'),
+    size: '3',
+  }),
+  reject: Icon({
+    source: require('@/assets/icons/reject.png'),
+    size: '6',
+  }),
+  error: Icon({
+    source: require('@/assets/icons/error.png'),
     size: '3',
   }),
 }

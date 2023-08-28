@@ -15,10 +15,12 @@ export const FormTextArea = React.forwardRef(({ ...props }: ITextAreaProps, ref)
   }))
 
   return (
-    <Box mt={4}>
+    <Box>
       <TextArea
         h={100}
-        bg={'#F7F8FA'}
+        bg={'#F6F7F9'}
+        placeholder="请输入"
+        borderWidth={0}
         autoCompleteType={false}
         onChangeText={(result) => {
           setText(result)

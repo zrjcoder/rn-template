@@ -1,6 +1,6 @@
 import React from 'react'
 import { Center, Image, Text, VStack } from 'native-base'
-import { TCard } from '../Home/components'
+import { TCard } from '../Incident/components'
 import { FormInput } from '@/components'
 import Lottie from 'lottie-react-native'
 

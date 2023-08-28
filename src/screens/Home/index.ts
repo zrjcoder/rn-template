@@ -1,5 +1,0 @@
-export * from './Home'
-export * from './Scene'
-export * from './Case'
-export * from './Detail'
-export * from './Message'

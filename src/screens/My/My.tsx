@@ -4,7 +4,7 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 
 import { Card, Icons } from '@/components'
-import { TCard } from '../Home/components'
+import { TCard } from '../Incident/components'
 import { Tools, Settings, type SettingProps, type ToolProps } from './components'
 import { type RootStackScreenProps } from '@/navigators/types'
 

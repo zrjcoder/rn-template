@@ -53,7 +53,7 @@ export const Dialog = React.forwardRef<DialogHandle, DialogProps>(
           }}
           {...props}
           avoidKeyboard>
-          <Modal.Content width={'90%'} {...styles}>
+          <Modal.Content width={'90%'} bg={'#FFFFFF'} {...styles}>
             {isHeader && <Header title={title} />}
             {children}
             {isFooter && <Footer />}

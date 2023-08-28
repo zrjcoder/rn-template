@@ -1,6 +1,6 @@
 import React from 'react'
 import { Center } from 'native-base'
-import { TButton, TCard } from '../Home/components'
+import { TButton, TCard } from '../Incident/components'
 import { FormTextArea } from '@/components'
 
 export function Feedback() {

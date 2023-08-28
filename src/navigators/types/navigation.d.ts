@@ -8,6 +8,7 @@ export type RootStackParamList = {
   MyTabs: NavigatorScreenParams<MyTabsParamList>
   OrderTabs: NavigatorScreenParams<OrderTabsParamList>
   Login: undefined
+  Message: undefined
   Map: undefined
   NotFound: undefined
 }
@@ -18,6 +19,7 @@ export type RootStackScreenProps<T extends keyof RootStackParamList> =
 // 底部按钮路由
 export type MainTabsParamList = {
   Home: undefined
+  Incident: undefined
   Order: undefined
   Work: undefined
   My: undefined
@@ -28,7 +30,6 @@ export type IncidentTabsParamList = {
   Scene: { data: any }
   Case: undefined
   Detail: undefined
-  Message: undefined
 }
 
 // 我的模块下页面路由
@@ -40,7 +41,7 @@ export type MyTabsParamList = {
   Idcard: undefined
   Feedback: undefined
   Contact: undefined
-  Filter: undefined
+  Filter: { callback: () => void }
 }
 
 // 指令下页面路由

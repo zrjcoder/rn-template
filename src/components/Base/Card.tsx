@@ -14,8 +14,10 @@ export function Card(props: CardProps) {
         px="3"
         mb={'1px'}
         bg="#ffffff"
-        shadow={0}
-        borderRadius={5}
+        style={{
+          elevation: 5,
+        }}
+        borderRadius={4}
         {...props}>
         {props.children}
       </VStack>
