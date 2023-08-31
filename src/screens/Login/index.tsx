@@ -1,49 +1,47 @@
 import React from 'react'
 import {
   Box,
-  HStack,
   VStack,
   Input,
   Image,
   Pressable,
   Button,
-  Text,
   Divider,
   IInputProps,
-  Link,
 } from 'native-base'
 import { useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 
 import { RootStackScreenProps } from '@/navigators/types'
-import { useAuthorizeMutation } from '@/services'
 import { setToken } from '@/store/user'
 import { Card, Icons, Toast } from '@/components'
-let ws = null
+import { useAuthorizeMutation } from '@/services'
+import { safeFetch } from '@/util'
+// let ws = null
 export function Login() {
-  React.useEffect(() => {
-    ws = new WebSocket(
-      // 'ws://172.19.45.72:29099?token=6b48baee-10ed-41a6-a1c8-22fa54eb95b4'
-      'http://172.19.45.72:18455/auth/service/websocket/1234'
-    )
+  // React.useEffect(() => {
+  //   ws = new WebSocket(
+  //     // 'ws://172.19.45.72:29099?token=6b48baee-10ed-41a6-a1c8-22fa54eb95b4'
+  //     'http://172.19.45.72:18455/auth/service/websocket/1234'
+  //   )
 
-    console.log(ws.readyState)
+  //   console.log(ws.readyState)
 
-    ws.addEventListener('open', function (event) {
-      console.log('open: ', event)
-    })
+  //   ws.addEventListener('open', function (event) {
+  //     console.log('open: ', event)
+  //   })
 
-    ws.addEventListener('close', (event) => {
-      console.log('close: ', event)
-    })
+  //   ws.addEventListener('close', (event) => {
+  //     console.log('close: ', event)
+  //   })
 
-    ws.addEventListener('error', (event) => {
-      console.log('error: ', event)
-    })
-    ws.addEventListener('message', (event) => {
-      console.log('message: ', event)
-    })
-  }, [])
+  //   ws.addEventListener('error', (event) => {
+  //     console.log('error: ', event)
+  //   })
+  //   ws.addEventListener('message', (event) => {
+  //     console.log('message: ', event)
+  //   })
+  // }, [])
   const navigation = useNavigation<RootStackScreenProps<'Login'>>()
 
   const [showPwd, setShowPwd] = React.useState(false)
@@ -83,12 +81,12 @@ export function Login() {
           resizeMode="contain"
         />
         <Card>
-          <Button
+          {/* <Button
             onPress={() => {
               console.log(ws)
             }}>
             dudu
-          </Button>
+          </Button> */}
           <IconInput
             value={state.userName}
             InputLeftElement={Icons.avatar}
@@ -177,25 +175,18 @@ export function Login() {
       return
     }
 
-    try {
-      const result = await authorize({
-        userName: state.userName,
-        userPsw: state.userPsw,
-        verCode: '',
-      })
+    const { isSuccess, data } = await safeFetch(authorize, {
+      userName: state.userName,
+      userPsw: state.userPsw,
+      verCode: '',
+    })
 
-      const { token, message } = (result as { data: any }).data
-      if (token) {
-        dispatch(setToken(token))
+    const { value: token } = data
 
-        navigation.navigate('MainTabs', { screen: 'Home' })
-      } else {
-        Toast.error(message)
-      }
+    if (isSuccess && token) {
+      dispatch(setToken(token))
 
-      return { token, message }
-    } catch (err) {
-      Toast.error('登录出错！')
+      navigation.navigate('MainTabs', { screen: 'Home' })
     }
   }
 }

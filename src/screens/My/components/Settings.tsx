@@ -3,7 +3,7 @@ import { Divider, HStack, Image, Text, VStack } from 'native-base'
 import { ImageSourcePropType, TouchableNativeFeedback } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
-import { type MyTabsParamList, type RootStackScreenProps } from '@/navigators/types'
+import { type RootStackScreenProps, type MyTabsParamList } from '@/navigators/types'
 import { Icons } from '@/components'
 
 export type SettingProps = {
@@ -13,7 +13,7 @@ export type SettingProps = {
 }
 
 export function Settings({ settings }: { settings: SettingProps[] }) {
-  const navigation = useNavigation<RootStackScreenProps<'MyTabs'>>()
+  const navigation = useNavigation<RootStackScreenProps<any>>()
 
   return (
     <VStack>
@@ -27,9 +27,7 @@ export function Settings({ settings }: { settings: SettingProps[] }) {
                 break
 
               default:
-                navigation.navigate('MyTabs', {
-                  screen: setting.route,
-                })
+                navigation.navigate(setting.route)
                 break
             }
           }}>

@@ -1,6 +1,3 @@
-import React from 'react'
-
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
   Profile,
   Password,
@@ -12,78 +9,73 @@ import {
   Filter,
 } from '@/screens'
 
-import { headerStyles } from '../common'
+export const myTabs = [
+  {
+    name: 'Profile',
+    component: Profile,
+    options: {
+      headerTitle: '个人信息',
+    },
+  },
+  {
+    name: 'Contact',
+    component: Contact,
+    options: {
+      headerTitle: '警务通讯录',
+    },
+  },
+  {
+    name: 'Idcard',
+    component: Idcard,
+    options: {
+      headerTitle: '身份证识别',
+    },
+  },
+  {
+    name: 'Car',
+    component: Car,
+    options: {
+      headerTitle: '车辆查询',
+    },
+  },
+  {
+    name: 'Filter',
+    component: Filter,
+    options: {
+      headerTitle: '消息过滤器',
+    },
+  },
+  {
+    name: 'Password',
+    component: Password,
+    options: {
+      headerTitle: '修改密码',
+    },
+  },
+  {
+    name: 'Update',
+    component: Update,
+    options: {
+      headerTitle: '检查更新',
+    },
+  },
+  {
+    name: 'Feedback',
+    component: Feedback,
+    options: {
+      headerTitle: '意见更新',
+    },
+  },
+]
 
-const Tab = createNativeStackNavigator()
-
-export function MyTabs() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          headerTitle: '个人信息',
-          ...headerStyles,
-        }}
-      />
-      <Tab.Screen
-        name="Contact"
-        component={Contact}
-        options={{
-          headerTitle: '警务通讯录',
-          ...headerStyles,
-        }}
-      />
-      <Tab.Screen
-        name="Idcard"
-        component={Idcard}
-        options={{
-          headerTitle: '身份证识别',
-          ...headerStyles,
-        }}
-      />
-      <Tab.Screen
-        name="Car"
-        component={Car}
-        options={{
-          headerTitle: '车辆查询',
-          ...headerStyles,
-        }}
-      />
-
-      <Tab.Screen
-        name="Filter"
-        component={Filter}
-        options={{
-          headerTitle: '消息过滤器',
-          ...headerStyles,
-        }}
-      />
-      <Tab.Screen
-        name="Password"
-        component={Password}
-        options={{
-          headerTitle: '修改密码',
-          ...headerStyles,
-        }}
-      />
-      <Tab.Screen
-        name="Update"
-        component={Update}
-        options={{
-          headerTitle: '检查更新',
-          ...headerStyles,
-        }}
-      />
-      <Tab.Screen
-        name="Feedback"
-        component={Feedback}
-        options={{
-          headerTitle: '意见反馈',
-          ...headerStyles,
-        }}
-      />
-    </Tab.Navigator>
-  )
+// 警情模块下页面路由
+export type MyTabsParamList = {
+  Profile: undefined
+  Password: undefined
+  Update: undefined
+  Car: undefined
+  Idcard: undefined
+  Feedback: undefined
+  Contact: undefined
+  Filter: { callback: () => void }
 }

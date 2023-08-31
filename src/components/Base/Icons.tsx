@@ -53,6 +53,10 @@ export const Icons = {
     source: require('@/assets/icons/error.png'),
     size: '3',
   }),
+  close: Icon({
+    source: require('@/assets/icons/close.png'),
+    size: '3',
+  }),
 }
 
 function Icon({ source, size = 4 }: IImageProps) {

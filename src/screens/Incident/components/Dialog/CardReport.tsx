@@ -1,37 +1,39 @@
 import React, { forwardRef } from 'react'
-import { Box, Text, HStack, Image, VStack } from 'native-base'
+import { Box, Text, HStack, Image, VStack, IBoxProps } from 'native-base'
 
-import { Dialog, type DialogProps, type DialogHandle, Tag } from '@/components'
+import { Dialog, type DialogProps, type DialogHandle } from '@/components'
 
-export const CardReport = forwardRef<DialogHandle, DialogProps>((props, ref) => {
-  return (
-    <Dialog title="报案人信息" {...props} ref={ref}>
-      <Box mx={4} mt={4}>
-        <ReportInfo />
+export const CardReport = forwardRef<DialogHandle, { data: any } & DialogProps>(
+  ({ data, ...props }, ref) => {
+    return (
+      <Dialog title="报案人信息" {...props} ref={ref}>
+        <Box mx={4} mt={4}>
+          <ReportInfo data={data} />
 
-        <RecInfo
-          data={{
-            案发地址: '乌兰察布市集宁区察哈尔西街与工农南路辅路交叉路口往西南约280米',
-            报警人定位: '乌兰察布市集宁区察哈尔西街与工农南路辅路交叉路口往西南约280米',
-          }}
-        />
-
-        <Box mt={2} mb={10}>
-          <Tags
-            data={[
-              { label: '前科人员', color: '#FF2200' },
-              { label: '心胀病', color: '#FF2200' },
-              { label: '高血压', color: '#FF2200' },
-              { label: '抑郁症', color: '#FF2200' },
-            ]}
+          <RecInfo
+            data={{
+              案发地址: data?.reportAddress,
+              报警人定位: data?.reportAddress,
+            }}
           />
-        </Box>
-      </Box>
-    </Dialog>
-  )
-})
 
-export function ReportInfo({ ...props }) {
+          <Box mt={2} mb={10}>
+            {/* <Tags
+              data={[
+                { label: '前科人员', color: '#FF2200' },
+                { label: '心胀病', color: '#FF2200' },
+                { label: '高血压', color: '#FF2200' },
+                { label: '抑郁症', color: '#FF2200' },
+              ]}
+            /> */}
+          </Box>
+        </Box>
+      </Dialog>
+    )
+  }
+)
+
+export function ReportInfo({ data, ...props }: { data: any } & IBoxProps) {
   return (
     <HStack width={'100%'} {...props}>
       <Box flex={3}>
@@ -49,7 +51,7 @@ export function ReportInfo({ ...props }) {
               fontSize: '16px',
               fontWeight: '600',
             }}>
-            赵红梅
+            {data?.name}
           </Box>
           <Box
             _text={{
@@ -62,10 +64,10 @@ export function ReportInfo({ ...props }) {
         </HStack>
         <Info
           data={{
-            年龄: '28岁',
-            联系电话: '13266223312',
-            身份证号: '230238233819382731',
-            '24小时报案': '1次',
+            年龄: data?.age ?? '暂无',
+            联系电话: data?.tel ?? '暂无',
+            身份证号: data?.idCard ?? '暂无',
+            '24小时报案': '暂无',
           }}
         />
       </VStack>
@@ -115,16 +117,16 @@ function RecInfo({ data }: any) {
   )
 }
 
-function Tags({ data }: any) {
-  return (
-    <HStack>
-      {data.map((item: any) => {
-        return (
-          <Box key={item.label}>
-            <Tag text={item.label} mr={2} />
-          </Box>
-        )
-      })}
-    </HStack>
-  )
-}
+// function Tags({ data }: any) {
+//   return (
+//     <HStack>
+//       {data.map((item: any) => {
+//         return (
+//           <Box key={item.label}>
+//             <Tag text={item.label} mr={2} />
+//           </Box>
+//         )
+//       })}
+//     </HStack>
+//   )
+// }

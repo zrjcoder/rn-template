@@ -49,11 +49,34 @@ export function TaskItem({
           pb={5}
           px={3}
           rightPress={rightPress}
-          // centerPress={centerPress}
           centerButton={centerButton}
           leftPress={leftPress}
         />
       }
     />
   )
+}
+
+export type TaskLevelProps = {
+  label: string
+  status: number
+}
+
+export const TaskLevel: any = {
+  '01': {
+    label: '一级',
+    code: 0,
+  },
+  '02': {
+    label: '二级',
+    code: 1,
+  },
+  '03': {
+    label: '三级',
+    code: 2,
+  },
+  '04': {
+    label: '四级',
+    code: 3,
+  },
 }

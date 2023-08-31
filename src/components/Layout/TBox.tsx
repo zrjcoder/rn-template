@@ -1,8 +1,12 @@
 import React from 'react'
 import { Box, IBoxProps, Spinner } from 'native-base'
 import LinearGradient from 'react-native-linear-gradient'
-import { TouchableNativeFeedback } from 'react-native'
-import { StyleProp, ViewStyle, useWindowDimensions } from 'react-native'
+import {
+  TouchableNativeFeedback,
+  StyleProp,
+  ViewStyle,
+  useWindowDimensions,
+} from 'react-native'
 
 import { colors } from '@/util'
 
@@ -36,6 +40,9 @@ export function TBox({
       style={style}>
       <TouchableNativeFeedback
         onPress={() => {
+          if (isLoading) {
+            return
+          }
           onPress && onPress()
         }}>
         <Box

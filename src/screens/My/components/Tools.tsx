@@ -12,7 +12,7 @@ export type ToolProps = {
 }
 
 export function Tools({ tools }: { tools: ToolProps[] }) {
-  const navigation = useNavigation<RootStackScreenProps<'MyTabs'>>()
+  const navigation = useNavigation<RootStackScreenProps<any>>()
 
   return (
     <HStack>
@@ -20,9 +20,7 @@ export function Tools({ tools }: { tools: ToolProps[] }) {
         <TouchableNativeFeedback
           key={tool.route}
           onPress={() => {
-            navigation.navigate('MyTabs', {
-              screen: tool.route,
-            })
+            navigation.navigate(tool.route as any)
           }}>
           <VStack alignItems={'center'} mr={6}>
             <Image

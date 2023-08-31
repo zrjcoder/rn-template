@@ -24,9 +24,9 @@ function color(status: number) {
 
 function colors(status: number) {
   const themeColors: { [key: number]: string[] } = {
-    0: [level_one_dark, level_one_light],
-    1: [level_two_dark, level_two_light],
-    2: [level_three_dark, level_three_light],
+    0: [level_one_dark, level_one_light, level_one_light],
+    1: [level_two_dark, level_two_light, level_two_light],
+    2: [level_three_dark, level_three_light, level_three_light],
     3: [level_four_dark, level_four_light, level_four_light],
   }
 

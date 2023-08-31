@@ -1,25 +1,24 @@
-import React, { useRef, useEffect, useCallback } from 'react'
-
+import React, { useRef, useEffect, useCallback, useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
 import { Box } from 'native-base'
+
 import { TaskList, type TaskListParamsProps, type TaskListHandle } from '../components'
-import { type DialogHandle } from '@/components'
+import { Toast } from '@/components'
 import { useLazyFetchTaskListQuery } from '@/services'
 import { Alarm, Immediate, type ImmediateResHandle } from '../components/Dialog'
-
-import { useNavigation } from '@react-navigation/native'
-
-import { type MyTabsParamList, type RootStackScreenProps } from '@/navigators/types'
+import { type RootStackScreenProps } from '@/navigators/types'
 import { executeAfterDelay } from '@/util'
 
 export const Task = ({ params }: { params: TaskListParamsProps }) => {
-  const navigation = useNavigation<RootStackScreenProps<'IncidentTabs'>>()
+  const navigation = useNavigation<RootStackScreenProps<'Scene'>>()
 
-  const alarmDialogRef = useRef<DialogHandle>(null)
+  const alarmDialogRef = useRef<any>(null)
   const immediateDialogRef = useRef<ImmediateResHandle>(null)
-
   const taskListRef = useRef<TaskListHandle>(null)
 
   const [fetchTaskList, result] = useLazyFetchTaskListQuery()
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const getData = useCallback(
     (params: any = {}) => {
@@ -37,21 +36,45 @@ export const Task = ({ params }: { params: TaskListParamsProps }) => {
 
   return (
     <Box flex={1}>
-      <Alarm ref={alarmDialogRef} onLeftPress={() => {}} onRightPress={() => {}} />
+      <Alarm
+        isLoading={isLoading}
+        title="已接收新警情"
+        ref={alarmDialogRef}
+        onLeftPress={async (data) => {
+          setIsLoading(true)
+
+          const { isSuccess } = await taskListRef.current?.updateTaskStatus('go')
+          alarmDialogRef.current?.closeDialog()
+
+          setIsLoading(false)
+
+          if (isSuccess) {
+            immediateDialogRef.current?.countDownStart()
+            executeAfterDelay(() => {
+              navigation.navigate('Scene', {
+                data,
+              })
+            })
+          }
+        }}
+        onRightPress={() => {}}
+      />
       <Immediate ref={immediateDialogRef} />
       <TaskList
+        ref={taskListRef}
         getData={getData}
         result={result}
-        onItemPress={() => {
-          taskListRef.current?.updateTaskStatus('receive')
-          executeAfterDelay(() => {
-            navigation.navigate('IncidentTabs', {
-              screen: 'Scene',
-              params: {
-                data: {},
-              },
-            })
-          })
+        onItemPress={async (_, item: any) => {
+          alarmDialogRef?.current?.showDialog(item)
+
+          const { isSuccess } = await taskListRef.current?.updateTaskStatus(
+            'receive',
+            item
+          )
+          if (isSuccess) {
+            Toast.success('出警成功')
+          }
+          return
         }}
       />
     </Box>

@@ -8,7 +8,7 @@ import { MainTabsScreenProps } from '@/navigators/types'
 import { History, Task, Ongoing } from './Tabs'
 import { SearchBar, type FlatListParamsProps } from '@/components'
 
-export const Incident = withForwardedNavigationParams<MainTabsScreenProps<'Home'>>()(
+export const Incident = withForwardedNavigationParams<MainTabsScreenProps<'Incident'>>()(
   () => {
     const layout = useWindowDimensions()
 

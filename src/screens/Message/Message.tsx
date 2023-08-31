@@ -21,7 +21,7 @@ export type MessageRouteProps = {
 }
 
 export function Message() {
-  const navigation = useNavigation<RootStackScreenProps<'MyTabs'>>()
+  const navigation = useNavigation<RootStackScreenProps<'Filter'>>()
   const tabPageRef = useRef<TabPageHandle>(null)
 
   let messageTypes = useSelector((state: { user: UserState }) => state.user.messageTypes)
@@ -52,13 +52,10 @@ export function Message() {
         px={2}
         justifyContent={'center'}
         onTouchStart={() => {
-          navigation.navigate('MyTabs', {
-            screen: 'Filter',
-            params: {
-              callback: () => {
-                console.log('messageTypes: ', messageTypes)
-                tabPageRef.current?.setMessageRoutes(format(messageTypes))
-              },
+          navigation.navigate('Filter', {
+            callback: () => {
+              console.log('messageTypes: ', messageTypes)
+              tabPageRef.current?.setMessageRoutes(format(messageTypes))
             },
           })
         }}>

@@ -1,12 +1,12 @@
-import React, { useRef, useState, forwardRef } from 'react'
+import React, { useRef, forwardRef } from 'react'
 import { Box } from 'native-base'
 import { useNavigation } from '@react-navigation/native'
 
 import { RootStackScreenProps } from '@/navigators/types'
-import { FlatList, type FlatListHandle, Toast, FlatListParamsProps } from '@/components'
+import { FlatList, type FlatListHandle, FlatListParamsProps } from '@/components'
 import { useUpdateTaskMutation, type PoliceTypeProps } from '@/services'
-import { TaskItem, CenterButton } from '.'
-import { convertIncidentDataToShow } from '@/util'
+import { TaskItem, TButton } from '.'
+import { convertIncidentDataToShow, safeFetch } from '@/util'
 
 export type TaskListParamsProps = {
   condition?: {
@@ -18,12 +18,12 @@ export type TaskListParamsProps = {
 type TaskListProps = {
   result: any
   getData: (params?: TaskListParamsProps) => void
-  onItemPress: (item: any) => void
+  onItemPress: (type: 'receive' | 'unGo' | 'go' | 'unFeedback', item: any) => void
 }
 
 export type TaskListHandle = {
-  currentItem: any
-  updateTaskStatus: (updateType: PoliceTypeProps) => void
+  isLoading: boolean
+  updateTaskStatus: (updateType: PoliceTypeProps, item?: any) => Promise<any>
 }
 
 export const TaskList = forwardRef(
@@ -34,12 +34,10 @@ export const TaskList = forwardRef(
     const listRef = useRef<FlatListHandle>(null)
 
     const [update, { isLoading }] = useUpdateTaskMutation()
-    const [currentItem, setCurrentItem] = useState<any>(null)
 
     React.useImperativeHandle(ref, () => ({
-      currentItem,
-      updateTaskStatus: (updateType: PoliceTypeProps) => {
-        updateTask(updateType)
+      updateTaskStatus: async (updateType: PoliceTypeProps, item: any = null) => {
+        return await updateTask(updateType, item)
       },
     }))
 
@@ -48,86 +46,92 @@ export const TaskList = forwardRef(
         <FlatList
           ref={listRef}
           isFetching={isFetching}
+          keyExtractor={(item, index) => (item?.gid + index).toString()}
           data={data?.data?.list ?? []}
           onRefresh={() => {
             getData({})
           }}
-          renderItem={({ item }) => (
-            <TaskItem
-              item={convertIncidentDataToShow(item)}
-              leftPress={() => {}}
-              centerButton={
-                <CenterButton
-                  isLoading={item?.gid === currentItem?.gid && isLoading}
-                  isLoadingText="出警中..."
-                  onPress={() => {
-                    console.log(item, data, currentItem)
-                    setCurrentItem(item)
-                    onItemPress(item)
-                  }}>
-                  立即出警
-                </CenterButton>
-              }
-              rightPress={() => {
-                navigation.navigate('Map')
-              }}
-            />
-          )}
+          renderItem={({ item }) => {
+            const statusData = getCurrentTaskStatusData(item?.status)
+
+            return (
+              <TaskItem
+                item={convertIncidentDataToShow(item?.jjdbGab)}
+                leftPress={() => {}}
+                centerButton={
+                  <TButton
+                    w={104}
+                    theme={
+                      ['go', 'unFeedback'].includes(statusData?.type)
+                        ? 'success'
+                        : 'alarm'
+                    }
+                    isLoading={isLoading}
+                    isLoadingText={statusData?.buttonLoadingText}
+                    onPress={() => {
+                      onItemPress(statusData?.type, item)
+                    }}>
+                    {statusData?.buttonText}
+                  </TButton>
+                }
+                rightPress={() => {
+                  navigation.navigate('Map')
+                }}
+              />
+            )
+          }}
         />
       </Box>
     )
 
-    async function updateTask(updateType: PoliceTypeProps) {
-      try {
-        const result = await update({
-          id: currentItem?.dispatchList[0]?.gid,
-          code: currentItem?.dispatchList[0]?.jjdbh,
-          updateType,
-        })
+    async function updateTask(updateType: PoliceTypeProps, item: any = null) {
+      const result = await safeFetch(update, {
+        id: item?.dispatchList[0]?.gid,
+        code: item?.dispatchList[0]?.jjdbh,
+        updateType,
+      })
 
-        await getData()
+      getData()
 
-        if ('data' in result) {
-          const data = result.data
-          Toast.info(data?.resMsg)
-        }
-      } catch {
-        Toast.error('出错了！')
+      return {
+        isSuccess: result?.isSuccess,
+        data: item,
       }
     }
   }
 )
 
-// type tabDataProps = {
-//   type: PoliceTypeProps
-//   buttonText: string
-//   buttonLoadingText: string
-// }
+function getCurrentTaskStatusData(status: number): {
+  buttonLoadingText: string
+  buttonText: string
+  type: 'receive' | 'unGo' | 'go' | 'unFeedback'
+} {
+  const tabData: any = {
+    // 未接案件
+    0: {
+      buttonText: '立即接警',
+      buttonLoadingText: '接警中...',
+      type: 'receive',
+    },
+    // 接警但未出警
+    1: {
+      type: 'unGo',
+      buttonText: '立即出警',
+      buttonLoadingText: '出警中...',
+    },
+    // 出警但未到现场
+    2: {
+      type: 'go',
+      buttonText: '进行中',
+      buttonLoadingText: '出警中...',
+    },
+    // 到现场但未反馈
+    3: {
+      type: 'unFeedback',
+      buttonText: '反馈中',
+      buttonLoadingText: '反馈中...',
+    },
+  }
 
-// function getDataFromTabAndPoliceType(tabIndex: number, type: PoliceTypeProps) {
-//   const tabData: any = {
-//     // 未接案件
-//     0: {
-//       receive: {
-//         buttonText: '立即接警',
-//         buttonLoadingText: '接警中...',
-//         type: 'receive',
-//       },
-//     },
-//     // 正在进行案件
-//     1: {
-//       unGo: {
-//         type: 'unGo',
-//         buttonText: '立即出警',
-//         buttonLoadingText: '出警中...',
-//       },
-//       go: {
-//         type: 'go',
-//         buttonText: '进行中',
-//         buttonLoadingText: '出警中...',
-//       },
-//     },
-//   }
-
-//   // const data = tabData[tabIndex][type] ?? {}
-// }
+  return tabData[status]
+}

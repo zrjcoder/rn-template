@@ -1,25 +1,52 @@
 import React from 'react'
-import { Box } from 'native-base'
+import { useNavigation } from '@react-navigation/native'
 
-import { Button } from '@/components'
-import { InfoCard, InfoHeader } from '@/components/home'
+import { InfoCard, InfoHeader, TaskLevel } from '@/components/home'
+import { useDisposalTask } from '../hooks'
+import { safeFetch } from '@/util'
+import { useLazyFetchTaskDetailQuery } from '@/services'
+import { RootStackScreenProps } from '@/navigators/types'
 
-export function HistoryItem({ item, onPress }: { item: any; onPress: () => void }) {
+export function HistoryItem({ item }: { item: any }) {
+  const { updateType } = useDisposalTask(item)
+  const [fetchTaskDetail, { isFetching }] = useLazyFetchTaskDetailQuery()
+
+  const navigation = useNavigation<RootStackScreenProps<'Detail'>>()
+
   return (
-    <Button isPressedStyle={false} isScale={true} scale={0.95} onPress={onPress}>
-      <InfoCard
-        Header={
-          <InfoHeader
-            data={{
-              text: item?.address,
-              title: item?.recType,
-              date: item?.date,
-              tags: [{ label: '处警规则' }, { label: '周边资源' }],
-            }}
-          />
-        }
-        isHeaderDivider={false}
-      />
-    </Button>
+    <InfoCard
+      isHeaderDivider={false}
+      Header={
+        <InfoHeader
+          isLoading={isFetching}
+          status={TaskLevel[item?.jjdbGab?.jqdjdm]?.code}
+          onPress={async () => {
+            const jjdbh = item?.dispatchList[0]?.jjdbh ?? ''
+
+            const { isSuccess, data } = await safeFetch(fetchTaskDetail, {
+              jjdbh,
+              type: 'self',
+            })
+
+            if (isSuccess) {
+              navigation.navigate('Detail', {
+                data,
+              })
+            }
+          }}
+          rightTag={{
+            label: item?.feedBackStatus === 0 ? updateType?.label : '已处置',
+            color: item?.feedBackStatus === 0 ? '#FF2200' : '#1BCC09',
+          }}
+          tag={TaskLevel[item?.jjdbGab?.jqdjdm]?.label}
+          data={{
+            title: item?.jjdbGab?.bjnr,
+            text: item?.jjdbGab?.fjdw,
+            date: item?.jjdbGab?.bjsj,
+            ...item,
+          }}
+        />
+      }
+    />
   )
 }

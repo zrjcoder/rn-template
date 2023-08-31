@@ -17,6 +17,13 @@ export const policeApi = api.injectEndpoints({
       }),
     }),
 
+    fetchTaskDetail: build.query<any, any>({
+      query: (body) => ({
+        url: '/visualization/jjdbGabAssociation/getInfoByGId',
+        params: body,
+      }),
+    }),
+
     // 出警、接警、取消任务
     updateTask: build.mutation<
       any,
@@ -36,8 +43,21 @@ export const policeApi = api.injectEndpoints({
         method: 'PUT',
       }),
     }),
+
+    saveTask: build.mutation<any, any>({
+      query: (body) => ({
+        url: '/visualization/jjdbGabFeedBack/save',
+        body: body,
+        method: 'POST',
+      }),
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useLazyFetchTaskListQuery, useUpdateTaskMutation } = policeApi
+export const {
+  useLazyFetchTaskListQuery,
+  useLazyFetchTaskDetailQuery,
+  useUpdateTaskMutation,
+  useSaveTaskMutation,
+} = policeApi

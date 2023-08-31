@@ -1,8 +1,118 @@
-import React from 'react'
-import { ScrollView } from 'native-base'
+import React, { useRef } from 'react'
+import { Box, ScrollView, VStack } from 'native-base'
+import { useRoute, useNavigation } from '@react-navigation/native'
 
-import { TCard, InfoReport, CaseProcess } from '@/components/home'
-import { InfoBox } from '@/components'
+import {
+  TCard,
+  InfoReport,
+  CaseProcess,
+  Alarm,
+  Immediate,
+  type ImmediateResHandle,
+  FixedButton,
+} from '@/components/home'
+import { InfoBox, type DialogHandle, Toast } from '@/components'
+import { convertIncidentDataToShow, executeAfterDelay } from '@/util'
+import { useDisposalTask } from './hooks'
+import { RootStackScreenProps, IncidentTabsScreenProps } from '@/navigators/types'
+
+export function Detail() {
+  const navigation = useNavigation<RootStackScreenProps<'Detail'>>()
+
+  const route = useRoute<IncidentTabsScreenProps<'Detail'>['route']>()
+  const paramsData = route?.params?.data
+
+  const data = {
+    ...paramsData,
+    jjdbGab: paramsData?.dataInfo,
+  }
+  const item = convertIncidentDataToShow(data?.dataInfo)
+
+  const alarmDialogRef = useRef<DialogHandle>(null)
+  const immediateDialogRef = useRef<ImmediateResHandle>(null)
+
+  const { updateType, updateTask, isLoading } = useDisposalTask(data)
+
+  return (
+    <VStack flex={1}>
+      <FixedButton isLoading={isLoading} onPress={handleDisposal} />
+
+      <ScrollView showsVerticalScrollIndicator={false} mb={4}>
+        <Alarm
+          isLoading={isLoading}
+          title="已接收新警情"
+          ref={alarmDialogRef}
+          onLeftPress={async () => {
+            const { isSuccess } = await updateTask()
+            alarmDialogRef.current?.closeDialog()
+
+            if (isSuccess) {
+              immediateDialogRef.current?.countDownStart()
+              executeAfterDelay(() => {
+                navigation.navigate('Scene', {
+                  data,
+                })
+              })
+            }
+          }}
+        />
+        <Immediate ref={immediateDialogRef} />
+
+        <TCard title="案件信息" mb={3}>
+          <InfoReport mt={2} data={data?.dataInfo} />
+          <InfoBox data={item} info={info} />
+        </TCard>
+
+        <TCard title="出警流程">
+          <Box mt={3} />
+          <CaseProcess />
+        </TCard>
+      </ScrollView>
+    </VStack>
+  )
+
+  async function handleDisposal() {
+    switch (updateType.type) {
+      case 'receive':
+        const receive = await updateTask()
+
+        if (receive?.isSuccess) {
+          Toast.success('接警成功')
+          alarmDialogRef.current?.showDialog()
+        }
+        break
+
+      case 'go':
+        const go = await updateTask()
+
+        if (go?.isSuccess) {
+          Toast.success('出警成功')
+          immediateDialogRef.current?.countDownStart()
+          executeAfterDelay(() => {
+            nav(data)
+          })
+        }
+        break
+
+      case 'reach':
+        nav(data)
+        break
+
+      case 'feedback':
+        nav(data, 'Case')
+        break
+
+      default:
+        break
+    }
+  }
+
+  function nav(data: any = {}, route: 'Scene' | 'Case' = 'Scene') {
+    navigation.navigate(route as any, {
+      data,
+    })
+  }
+}
 
 const info = {
   type: '警情类型',
@@ -10,39 +120,9 @@ const info = {
   label: '标        签',
   jurisdiction: '所属辖区',
   subdivision: '所属分局',
-  report: '报  警  人',
   tel: '报警电话',
   date: '报警时间',
   address: '案发地址',
   desc: '报警描述',
   feedback: '反馈内容',
-}
-
-const data = {
-  type: '扬言伤人',
-  level: '二级',
-  label: '暂无标签',
-  jurisdiction: '虎山派出所',
-  subdivision: '集宁区派出所',
-  report: '张三',
-  tel: '15623235213',
-  date: '2022-12-14 10:20:30',
-  address: '乌兰察布市集宁区察哈尔西街与工农南路辅路交叉路口往西南约280米',
-  desc: '在集宁区哈尔西街与工农南路辅路交叉路，有人扬言要伤害他人。目前无人员受伤，请求出警',
-  feedback: '到达现场已经处理完成，当面进行调解，双方无意见',
-}
-
-export function Detail() {
-  return (
-    <ScrollView flex={1} showsVerticalScrollIndicator={false}>
-      <TCard title="案件信息">
-        <InfoReport />
-        <InfoBox data={data} info={info} />
-      </TCard>
-
-      <TCard title="出警流程">
-        <CaseProcess />
-      </TCard>
-    </ScrollView>
-  )
 }

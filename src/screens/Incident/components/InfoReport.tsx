@@ -3,17 +3,19 @@ import { Box, VStack, HStack, IBoxProps } from 'native-base'
 
 import { Tag, type DialogHandle } from '@/components'
 import { CardReport } from './Dialog'
+import { convertIncidentDataToShow } from '@/util'
 
 export function InfoReport({
   title = '报  警  人：',
-  value,
+  data,
   ...props
-}: { title?: String; value?: String } & IBoxProps) {
+}: { title?: String; data?: any } & IBoxProps) {
   const refDialog = React.useRef<DialogHandle>(null)
+  const item = convertIncidentDataToShow(data)
 
   return (
     <Box {...props}>
-      <CardReport ref={refDialog} />
+      <CardReport ref={refDialog} data={item} />
 
       <VStack>
         <HStack justifyContent={'flex-start'}>
@@ -36,7 +38,7 @@ export function InfoReport({
               fontSize: 'sm',
               color: '#333333',
             }}>
-            <Box>{value}</Box>
+            <Box>{item?.name}</Box>
 
             <Tag
               mr={2}

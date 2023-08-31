@@ -16,6 +16,12 @@ const themeStyles = {
     borderColor: '#266EFE',
     borderWidth: 1,
   },
+  success: {
+    bg: '#D9F5DA',
+    color: '#1BCC09',
+    borderColor: '#1BCC09',
+    borderWidth: 1,
+  },
 }
 
 export function TButton({
@@ -24,7 +30,7 @@ export function TButton({
   textStyle = {},
   ...props
 }: {
-  theme?: 'primary' | 'alarm' | 'light'
+  theme?: 'primary' | 'alarm' | 'light' | 'success'
   textStyle?: StyledProps
   containerStyle?: StyledProps
 } & IButtonProps) {

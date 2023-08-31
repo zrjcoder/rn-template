@@ -1,44 +1,38 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useCallback } from 'react'
 import { Box } from 'native-base'
-import { useNavigation } from '@react-navigation/native'
 
-import { RootStackScreenProps } from '@/navigators/types'
-import { getItems } from '../api'
-import { FlatList, type FlatListHandle } from '@/components'
+import { FlatList, FlatListParamsProps, type FlatListHandle } from '@/components'
 import { HistoryItem } from '../components'
+import { useLazyFetchTaskListQuery } from '@/services'
 
-export const History = () => {
-  const [dataSource, setDataSource] = useState([])
-
+export const History = ({ params }: { params: FlatListParamsProps }) => {
   const listRef = useRef<FlatListHandle>(null)
-  const navigation = useNavigation<RootStackScreenProps<'IncidentTabs'>>()
 
-  const getData = () => {
-    // getItems().then((res) => {
-    //   setDataSource(res)
-    //   listRef.current?.setRefreshing(false)
-    // })
-  }
+  const [fetchTaskList, { data }] = useLazyFetchTaskListQuery()
+
+  const getData = useCallback(
+    (params: FlatListParamsProps = {}) => {
+      fetchTaskList({
+        condition: { selType: 'done' },
+        ...params,
+      })
+    },
+    [fetchTaskList]
+  )
 
   useEffect(() => {
-    // getData()
-  }, [])
+    getData(params)
+  }, [getData, params])
 
   return (
     <Box flex={1} bg="#F5F7F9">
       <FlatList
         ref={listRef}
-        data={dataSource}
-        renderItem={({ item }) => (
-          <HistoryItem
-            item={item}
-            onPress={() => {
-              navigation.navigate('IncidentTabs', {
-                screen: 'Detail',
-              })
-            }}
-          />
-        )}
+        data={data?.data?.list ?? []}
+        onRefresh={() => {
+          getData(params)
+        }}
+        renderItem={({ item }) => <HistoryItem item={item} />}
       />
     </Box>
   )

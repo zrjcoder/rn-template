@@ -9,16 +9,14 @@ import { Tools, Settings, type SettingProps, type ToolProps } from './components
 import { type RootStackScreenProps } from '@/navigators/types'
 
 export function My() {
-  const navigation = useNavigation<RootStackScreenProps<'MyTabs'>>()
+  const navigation = useNavigation<RootStackScreenProps<'Profile'>>()
 
   return (
     <Box flex={1}>
       <VStack>
         <PersonInfo
           onPress={() => {
-            navigation.navigate('MyTabs', {
-              screen: 'Profile',
-            })
+            navigation.navigate('Profile')
           }}
         />
 

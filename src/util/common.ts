@@ -1,5 +1,6 @@
 /* eslint-disable radix */
 
+import { Toast } from '@/components'
 import { PermissionsAndroid, type Permission } from 'react-native'
 
 export async function permission(permissions: Permission[]) {
@@ -56,6 +57,31 @@ export function convertTimeToSeconds(time: string) {
   return totalSeconds
 }
 
-export function executeAfterDelay(callback: () => void, delayMs: number = 1000): void {
+export function executeAfterDelay(callback: () => void, delayMs: number = 3000): void {
   setTimeout(callback, delayMs)
+}
+
+export async function safeFetch(
+  func: (params: any) => Promise<any>,
+  params: any
+): Promise<any> {
+  try {
+    const result: any = await func(params)
+    // Toast.error(JSON.stringify(result))
+
+    if (result?.data?.resCode === '00000') {
+      return {
+        isSuccess: true,
+        data: result?.data?.data,
+      }
+    } else {
+      Toast.error(result?.data?.resMsg)
+      return {
+        isSuccess: false,
+        data: null,
+      }
+    }
+  } catch {
+    Toast.error('出错了请联系管理员！')
+  }
 }

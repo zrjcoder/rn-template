@@ -2,16 +2,21 @@ import type { NavigatorScreenParams } from '@react-navigation/native'
 import type { ForwardedTabScreenProps } from 'react-navigation-props-mapper'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
+import { IncidentTabsParamList, MyTabsParamList, OrderTabsParamList } from '../index'
+
 export type RootStackParamList = {
   MainTabs: NavigatorScreenParams<MainTabsParamList>
   IncidentTabs: NavigatorScreenParams<IncidentTabsParamList>
-  MyTabs: NavigatorScreenParams<MyTabsParamList>
   OrderTabs: NavigatorScreenParams<OrderTabsParamList>
+  MyTabs: NavigatorScreenParams<MainTabsParamList>
+
   Login: undefined
   Message: undefined
   Map: undefined
   NotFound: undefined
-}
+} & IncidentTabsParamList &
+  MyTabsParamList &
+  OrderTabsParamList
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
   NativeStackNavigationProp<RootStackParamList, T>
@@ -25,53 +30,20 @@ export type MainTabsParamList = {
   My: undefined
 }
 
-// 警情模块下页面路由
-export type IncidentTabsParamList = {
-  Scene: { data: any }
-  Case: undefined
-  Detail: undefined
-}
-
-// 我的模块下页面路由
-export type MyTabsParamList = {
-  Profile: undefined
-  Password: undefined
-  Update: undefined
-  Car: undefined
-  Idcard: undefined
-  Feedback: undefined
-  Contact: undefined
-  Filter: { callback: () => void }
-}
-
-// 指令下页面路由
-export type OrderTabsParamList = {
-  // 合作作战
-  TogetherAgainFeedback: undefined
-  TogetherRead: undefined
-  TogetherReceive: undefined
-  TogetherFeedback: undefined
-  // 重点人员
-  PersonnelFeedback: undefined
-  PersonnelReceive: undefined
-  // 逃跑人员
-  RunFeedback: undefined
-  RunReceive: undefined
-  // 智能预警
-  WarningFeedback: undefined
-  WarningReceive: undefined
-}
-
 export type MainTabsScreenProps<T extends keyof MainTabsParamList> =
   ForwardedTabScreenProps<MainTabsParamList & RootStackParamList, T>
 
 export type IncidentTabsScreenProps<T extends keyof IncidentTabsParamList> =
   ForwardedTabScreenProps<IncidentTabsParamList & RootStackParamList, T>
 
-export type OrderTabsScreenProps<T extends keyof OrderTabsParamList> =
-  ForwardedTabScreenProps<OrderTabsScreenProps & RootStackParamList, T>
-
 export type MyTabsScreenProps<T extends keyof MyTabsParamList> = ForwardedTabScreenProps<
   MyTabsParamList & RootStackParamList,
   T
 >
+
+export type OrderTabsScreenProps<T extends keyof OrderTabsParamList> =
+  ForwardedTabScreenProps<OrderTabsParamList & RootStackParamList, T>
+
+export type MyTabsParamList = MyTabsParamList
+export type IncidentTabsParamList = IncidentTabsParamList
+export type OrderTabsParamList = OrderTabsParamList

@@ -15,7 +15,7 @@ export function HeaderButton() {
       isPressedStyle={false}
       isScale
       onPress={() => {
-        navigation.navigate('IncidentTabs', { screen: 'Message' })
+        navigation.navigate('Message')
       }}>
       <Image
         size={'22px'}

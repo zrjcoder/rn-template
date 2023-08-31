@@ -2,6 +2,7 @@ import React, { ReactNode, forwardRef, useImperativeHandle } from 'react'
 import { Box, Center, Image, useDisclose, Collapse, IBoxProps } from 'native-base'
 
 import { Card, Button } from '@/components'
+import { color } from '@/util'
 
 export type InfoCardProps = {
   Header?: JSX.Element
@@ -99,7 +100,7 @@ function Wrapped({
 
 function HiddenBar({ isOpen, onPress }: { onPress: () => void; isOpen: boolean }) {
   return (
-    <Button pb={2} pt={1} onPress={onPress}>
+    <Button pb={2} pt={1} onPress={onPress} bg={color(3)}>
       <Center>
         <Image
           size={'22px'}

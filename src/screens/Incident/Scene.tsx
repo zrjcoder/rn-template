@@ -1,18 +1,51 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react'
-import { Box, HStack, VStack, Text, Image, Center } from 'native-base'
+import { Box, HStack } from 'native-base'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import { TouchableNativeFeedback } from 'react-native'
 
+import { Map, Toast, Icons } from '@/components'
+import {
+  InfoCard,
+  InfoHeader,
+  InfoContent,
+  Cancel,
+  type CancelDialogHandle,
+} from './components'
+import { useUpdateTaskMutation, type PoliceTypeProps } from '@/services'
+import { MapButtons } from './components/MapButtons'
 import { RootStackScreenProps, IncidentTabsScreenProps } from '@/navigators/types'
-import { Map, Button } from '@/components'
-import { InfoCard, InfoHeader, InfoContent } from './components'
 
 export function Scene() {
-  const navigation = useNavigation<RootStackScreenProps<'IncidentTabs'>>()
+  const navigation = useNavigation<RootStackScreenProps<'Scene'>>()
   const route = useRoute<IncidentTabsScreenProps<'Scene'>['route']>()
+
+  const dialogRef = React.useRef<CancelDialogHandle>(null)
+
   const data = route?.params?.data ?? {}
+  const refresh = route?.params?.refresh
+
+  const id = data?.dispatchList[0]?.gid ?? ''
+  const code = data?.dispatchList[0]?.jjdbh ?? ''
+  const item = data?.jjdbGab ?? {}
+
+  const [update, { isLoading }] = useUpdateTaskMutation()
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <CancelButton
+          onPress={() => {
+            dialogRef.current?.showDialog()
+          }}
+        />
+      ),
+    })
+  }, [navigation])
 
   return (
     <Box flex={1}>
+      <Cancel ref={dialogRef} onLeftPress={cancelTask} isLoading={isLoading} />
       <Map />
 
       <Box position={'absolute'} top={0} width={'100%'}>
@@ -23,106 +56,93 @@ export function Scene() {
             <InfoHeader
               data={{
                 ...data,
-                text: data?.address,
-                title: data?.recType,
-                date: data?.date,
+                title: item?.jqlxdm,
+                text: item?.fjdw,
+                date: item?.bjsj,
                 tags: [{ label: '处警规则' }, { label: '周边资源' }],
               }}
             />
           }
           Content={
             <InfoContent
-              data={data}
+              data={{
+                ...item,
+                name: item?.bjrmc,
+              }}
               info={{
-                tel: '联系电话',
-                recAddress: '接警地址',
-                reportAddress: '报警人定位',
+                bjdh: '联系电话',
+                gxdwdm: '接警地址',
+                jqdz: '报警人定位',
               }}
               desc={{
-                name: '报警内容',
-                value: data?.desc,
+                name: '报 警 描 述:',
+                value: item?.bjnr,
               }}
             />
           }
         />
       </Box>
 
-      <BottomButtons
+      <MapButtons
+        isLoading={isLoading}
         leftPress={() => {}}
-        centerPress={() => {
-          navigation.navigate('IncidentTabs', {
-            screen: 'Case',
-          })
+        centerPress={async () => {
+          const isSuccess = await updateTask('reach')
+
+          if (isSuccess) {
+            Toast.success('操作成功！')
+            navigation.navigate('Case', {
+              id,
+              code,
+            })
+          }
         }}
         rightPress={() => {}}
       />
     </Box>
   )
+
+  async function cancelTask() {
+    const isSuccess = await updateTask('unGo')
+    if (isSuccess) {
+      dialogRef.current?.closeDialog()
+      navigation.goBack()
+      refresh?.()
+    }
+  }
+
+  async function updateTask(updateType: PoliceTypeProps) {
+    try {
+      const result: any = await update({
+        id,
+        code,
+        updateType,
+      })
+
+      if (result?.data?.resCode === '00000') {
+        return true
+      } else {
+        Toast.warning(result?.data?.resMsg ?? '出问题了...')
+      }
+    } catch {
+      Toast.error('出错了！')
+    }
+  }
 }
 
-function BottomButtons({ leftPress, centerPress, rightPress }: any) {
+function CancelButton({ onPress }: { onPress?: () => void }) {
   return (
-    <Box
-      bg={'#FFFFFF'}
-      w={'100%'}
-      h={'60px'}
-      position={'absolute'}
-      justifyContent={'center'}
-      bottom={0}>
-      <HStack justifyContent={'space-around'} mx={8}>
-        <Button onPress={leftPress}>
-          <VStack size={10}>
-            <Center>
-              <Image
-                size={'22px'}
-                resizeMode="cover"
-                source={require('@/assets/icons/phone.png')}
-                alt="image"
-              />
-              <Text fontSize={'xs'}>联系报警人</Text>
-            </Center>
-          </VStack>
-        </Button>
-
-        <Box size={10} width={'80px'}>
-          <Button onPress={centerPress} isScale alignItems={'center'}>
-            <Box
-              shadow={'8'}
-              style={{
-                shadowColor: '#256EFF',
-              }}
-              position={'absolute'}
-              borderRadius={'full'}
-              bg={'#266EFF'}
-              size={'80px'}
-              zIndex={100}
-              bottom={'-30px'}
-              left={'-40px'}
-              justifyContent={'center'}
-              alignItems={'center'}>
-              <Text fontSize={'lg'} color="#FFFFFF">
-                到达
-              </Text>
-              <Text fontSize={'lg'} color="#FFFFFF">
-                现场
-              </Text>
-            </Box>
-          </Button>
+    <TouchableNativeFeedback onPress={onPress}>
+      <HStack alignItems={'center'}>
+        {Icons.close}
+        <Box
+          ml={1}
+          _text={{
+            color: '#FFFFFF',
+          }}>
+          取消任务
         </Box>
-        <Button onPress={rightPress}>
-          <VStack size={10}>
-            <Center>
-              <Image
-                size={'24px'}
-                resizeMode="cover"
-                source={require('@/assets/icons/clock.png')}
-                alt="image"
-              />
-              <Text fontSize={'xs'}>未到场处置</Text>
-            </Center>
-          </VStack>
-        </Button>
       </HStack>
-    </Box>
+    </TouchableNativeFeedback>
   )
 }
