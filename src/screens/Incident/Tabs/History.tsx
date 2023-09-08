@@ -13,7 +13,7 @@ export const History = ({ params }: { params: FlatListParamsProps }) => {
   const getData = useCallback(
     (params: FlatListParamsProps = {}) => {
       fetchTaskList({
-        condition: { selType: 'done' },
+        condition: { selType: 'done', type: 'case' },
         ...params,
       })
     },

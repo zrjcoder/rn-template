@@ -3,9 +3,22 @@ import React, { useRef, forwardRef, useImperativeHandle } from 'react'
 import { FormInputs, type FormInputsHandle } from '../index'
 import { TabView } from '@/components/home'
 
+export type CaseCarProps = {
+  carBelongName: string
+  carNo: string
+}
+export type CasePeopleProps = {
+  address: string
+  age: number
+  idCard: string
+  name: string
+  sex: string
+}
+
 export type FormCaseHandle = {
-  values: {
-    [key: string]: string
+  getValues: () => {
+    car: CaseCarProps
+    people: CasePeopleProps
   }
   isEmpty: () => boolean
 }
@@ -15,9 +28,11 @@ export const FormCase = forwardRef<FormCaseHandle>(({}, ref) => {
   const personInfoRef = useRef<FormInputsHandle>(null)
 
   useImperativeHandle(ref, () => ({
-    values: {
-      ...personInfoRef.current?.values,
-      ...carInfoRef.current?.values,
+    getValues: () => {
+      return {
+        car: carInfoRef.current?.values as CaseCarProps,
+        people: personInfoRef.current?.values as CasePeopleProps,
+      }
     },
     isEmpty: () => {
       return Boolean(personInfoRef.current?.isEmpty() || carInfoRef.current?.isEmpty())
@@ -60,9 +75,9 @@ export const FormCase = forwardRef<FormCaseHandle>(({}, ref) => {
               <FormInputs
                 data={{
                   name: '姓        名',
-                  gender: '性        别',
+                  sex: '性        别',
                   age: '年        龄',
-                  idCardNumber: '身份证号',
+                  idCard: '身份证号',
                   address: '居住地址',
                 }}
                 ref={personInfoRef}
@@ -72,8 +87,8 @@ export const FormCase = forwardRef<FormCaseHandle>(({}, ref) => {
             return (
               <FormInputs
                 data={{
-                  name: '车主姓名',
-                  code: '车  牌  号',
+                  carBelongName: '车主姓名',
+                  carNo: '车  牌  号',
                 }}
                 ref={carInfoRef}
               />

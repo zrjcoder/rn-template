@@ -11,7 +11,7 @@ export type FormInputsProps = {
 
 export type FormInputsHandle = {
   values: {
-    [key: string]: string
+    [key: string]: any
   }
   setValues: (values: { [key: string]: string }) => void
   isEmpty: () => boolean

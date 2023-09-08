@@ -9,7 +9,7 @@ export type AlarmProps = {
   title?: string
   isLoading?: boolean
   onLeftPress?: (item: any) => void
-  onRightPress?: () => void
+  onRightPress?: (item: any) => void
 } & DialogProps
 
 export const Alarm = forwardRef<any, AlarmProps>(
@@ -66,7 +66,9 @@ export const Alarm = forwardRef<any, AlarmProps>(
 
           <TButton
             flex={1}
-            onPress={onRightPress}
+            onPress={() => {
+              onRightPress(data)
+            }}
             theme="light"
             textStyle={{
               px: 2,

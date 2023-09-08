@@ -92,8 +92,8 @@ export type OrderTabsParamList = {
   TogetherReceive: undefined
   TogetherFeedback: undefined
   // 重点人员
-  PersonnelFeedback: undefined
-  PersonnelReceive: undefined
+  PersonnelFeedback: { data: any }
+  PersonnelReceive: { data: any }
   // 逃跑人员
   RunFeedback: undefined
   RunReceive: undefined

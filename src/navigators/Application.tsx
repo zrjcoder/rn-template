@@ -32,6 +32,7 @@ const ApplicationNavigator = () => {
 
           {incidentTabs.map(({ name, component, options }) => (
             <RootStack.Screen
+              key={name}
               name={name as any}
               component={component}
               options={{ headerShown: true, ...options }}
@@ -40,6 +41,7 @@ const ApplicationNavigator = () => {
 
           {myTabs.map(({ name, component, options }) => (
             <RootStack.Screen
+              key={name}
               name={name as any}
               component={component}
               options={{ headerShown: true, ...options }}
@@ -48,6 +50,7 @@ const ApplicationNavigator = () => {
 
           {orderTabs.map(({ name, component, options }) => (
             <RootStack.Screen
+              key={name}
               name={name as any}
               component={component}
               options={{ headerShown: true, ...options }}

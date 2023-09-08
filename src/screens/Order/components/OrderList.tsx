@@ -1,6 +1,5 @@
 import React, { useEffect, useCallback } from 'react'
 import { Box } from 'native-base'
-import { useNavigation } from '@react-navigation/native'
 
 import { RootStackScreenProps } from '@/navigators/types'
 import {
@@ -9,7 +8,7 @@ import {
   Toast,
   type FlatListParamsProps,
 } from '@/components'
-import { useLazyFetchOrderListQuery } from '@/services'
+import { useLazyFetchTaskListQuery } from '@/services'
 import { OrderItem } from '.'
 
 export type OrderListProps = {
@@ -19,25 +18,28 @@ export type OrderListProps = {
 }
 
 export function OrderList({ params, onLoad, status }: OrderListProps) {
-  const [fetchOrderList, { data, isFetching }] = useLazyFetchOrderListQuery()
+  const [fetchOrderList, { data, isFetching }] = useLazyFetchTaskListQuery()
 
   const getData = useCallback(
     (params = {}) => {
       let condition = {}
       switch (status) {
         case 'todo':
-          condition = { type: '0' }
+          condition = { selType: 'todo' }
           break
-        case 'going':
-          condition = { type: '1' }
+        case 'doing':
+          condition = { selType: 'doing' }
           break
         case 'done':
-          condition = { type: '1' }
+          condition = { selType: 'done' }
           break
       }
 
       fetchOrderList({
-        condition,
+        condition: {
+          ...condition,
+          type: 'other',
+        },
         ...params,
       })
     },
@@ -55,16 +57,9 @@ export function OrderList({ params, onLoad, status }: OrderListProps) {
         // data={data?.data?.list ?? []}
         data={data?.data?.list ?? [1]}
         onRefresh={() => {
-          // getData({})
+          getData(params)
         }}
-        renderItem={({ item }) => (
-          <OrderItem
-            // item={convertIncidentDataToShow(item)}
-            onPress={() => {
-              // navigation.navigate('Map')
-            }}
-          />
-        )}
+        renderItem={({ item }) => <OrderItem item={item} />}
       />
     </Box>
   )

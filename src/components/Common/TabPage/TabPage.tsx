@@ -6,6 +6,7 @@ import {
   TabView as DefaultTabView,
   TabBar,
   type SceneRendererProps,
+  type TabViewProps as DefaultTabViewProps,
 } from 'react-native-tab-view'
 
 export type TabsProps = {
@@ -23,10 +24,11 @@ export type TabViewProps = {
     key: string
     title: string
   }[]
+  styles?: IBoxProps
   pagerStyle?: StyleProp<ViewStyle>
 
   renderScene: (props: SceneRendererProps & { route: { key: string } }) => React.ReactNode
-} & IBoxProps
+} & Partial<DefaultTabViewProps<any>>
 
 export type TabPageHandle = {
   // setTabs: (tabs: TabsProps) => void
@@ -35,7 +37,17 @@ export type TabPageHandle = {
 }
 
 export const TabPage = React.forwardRef<TabPageHandle, TabViewProps>(
-  ({ onLoad = () => {}, routeScene, renderScene, pagerStyle = {}, ...props }, ref) => {
+  (
+    {
+      onLoad = () => {},
+      routeScene,
+      renderScene,
+      pagerStyle = {},
+      styles = {},
+      ...props
+    },
+    ref
+  ) => {
     const [index, setIndex] = useState(0)
     const [tabs, setTabs] = useState<TabsProps>([])
     const [routes, setRoutes] = useState(routeScene)
@@ -52,7 +64,7 @@ export const TabPage = React.forwardRef<TabPageHandle, TabViewProps>(
     }))
 
     return (
-      <Box flex={1} bg="#ffffff" shadow={0} borderRadius={5} {...props}>
+      <Box flex={1} bg="#ffffff" shadow={0} borderRadius={5} {...styles}>
         <DefaultTabView
           lazy
           style={{
@@ -61,11 +73,12 @@ export const TabPage = React.forwardRef<TabPageHandle, TabViewProps>(
           onSwipeEnd={() => {
             onLoad({ setTabs })
           }}
-          navigationState={{ index, routes } as any}
-          onIndexChange={setIndex}
           renderTabBar={DefaultTabBar}
           renderScene={renderScene}
           pagerStyle={pagerStyle}
+          {...props}
+          onIndexChange={setIndex}
+          navigationState={{ index, routes } as any}
         />
       </Box>
     )

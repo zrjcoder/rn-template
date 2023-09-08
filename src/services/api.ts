@@ -7,12 +7,11 @@ import {
 } from '@reduxjs/toolkit/query/react'
 import { Toast } from '@/components'
 
+const baseUrl =
+  process.env.NODE_ENV === 'development' ? process.env.BASE_URL : process.env.BUILD_URL
+
 const baseQuery = fetchBaseQuery({
-  baseUrl:
-    // process.env.NODE_ENV === 'development' ? process.env.BASE_URL : process.env.BUILD_URL,
-    // process.env.BASE_URL,
-    'http://172.19.46.100:18805/',
-  // 'http://26.152.201.150:18805/',
+  baseUrl,
   timeout: 15000,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as any).user.token

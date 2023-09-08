@@ -57,7 +57,9 @@ export const policeApi = api.injectEndpoints({
 
 export const {
   useLazyFetchTaskListQuery,
+  useFetchTaskListQuery,
   useLazyFetchTaskDetailQuery,
+  useFetchTaskDetailQuery,
   useUpdateTaskMutation,
   useSaveTaskMutation,
 } = policeApi

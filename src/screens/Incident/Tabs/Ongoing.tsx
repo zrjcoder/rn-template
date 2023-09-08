@@ -21,7 +21,7 @@ export const Ongoing = ({ params }: { params: TaskListParamsProps }) => {
   const getData = useCallback(
     (params: TaskListParamsProps = {}) => {
       fetchTaskList({
-        condition: { receiveStatus: 1, selType: 'doing' },
+        condition: { receiveStatus: 1, selType: 'doing', type: 'case' },
         ...params,
       })
     },

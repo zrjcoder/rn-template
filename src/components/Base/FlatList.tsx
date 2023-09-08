@@ -3,12 +3,13 @@ import { RefreshControl } from 'react-native'
 import { FlatList as List } from 'native-base'
 import { IFlatListProps } from 'native-base/lib/typescript/components/basic/FlatList'
 
-import { Loading } from '@/components'
+import { Loading, Empty } from '@/components'
 
 export type FlatListParamsProps = {
   keyword?: string
   pageSize?: number
   pageNum?: number
+  isRefresh?: boolean
 }
 
 export type FlatListProps = IFlatListProps<any> & {
@@ -30,15 +31,19 @@ export const FlatList = forwardRef<FlatListHandle, FlatListProps>(
     }, [isFetching])
 
     useImperativeHandle(ref, () => ({
-      setRefreshing,
+      setRefreshing: () => {},
     }))
+
+    if (isFetching) {
+      return <Loading />
+    }
 
     return (
       <List
         data={data}
         keyExtractor={(item, index) => index.toString()}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        ListEmptyComponent={<Loading />}
+        ListEmptyComponent={<Empty />}
         {...props}
       />
     )

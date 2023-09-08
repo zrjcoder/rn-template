@@ -15,6 +15,7 @@ export type MessageListProps = {
 
 export function MessageList({ params, route }: MessageListProps) {
   const [fetchMessageList, { data, isFetching }] = useLazyFetchMessageListQuery()
+
   const detailRef = useRef<MessageDetailHandle>(null)
 
   const getData = useCallback(
@@ -57,11 +58,8 @@ export function MessageList({ params, route }: MessageListProps) {
         renderItem={({ item }) => (
           <MessageItem
             item={item}
-            onPress={(currentItem) => {
-              detailRef.current?.showDialog(currentItem as any)
-              if (currentItem.readStatus === 0) {
-                getData(params)
-              }
+            onPress={() => {
+              getData(params)
             }}
           />
         )}

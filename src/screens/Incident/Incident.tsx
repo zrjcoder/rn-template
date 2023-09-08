@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useWindowDimensions } from 'react-native'
 import { TabView, TabBar } from 'react-native-tab-view'
 import { withForwardedNavigationParams } from 'react-navigation-props-mapper'
@@ -7,10 +7,13 @@ import { Box, Center, Text } from 'native-base'
 import { MainTabsScreenProps } from '@/navigators/types'
 import { History, Task, Ongoing } from './Tabs'
 import { SearchBar, type FlatListParamsProps } from '@/components'
+import { useRoute } from '@react-navigation/native'
 
 export const Incident = withForwardedNavigationParams<MainTabsScreenProps<'Incident'>>()(
   () => {
     const layout = useWindowDimensions()
+
+    const route = useRoute<MainTabsScreenProps<'Incident'>['route']>()
 
     const [keyword, setKeyword] = useState('')
     const [index, setIndex] = useState(0)
@@ -22,9 +25,15 @@ export const Incident = withForwardedNavigationParams<MainTabsScreenProps<'Incid
 
     const [params, setParams] = useState<FlatListParamsProps>({
       keyword: '',
-      pageSize: 10,
+      pageSize: 99,
       pageNum: 1,
+      isRefresh: false,
     })
+
+    useEffect(() => {
+      const tab = route.params?.tab ?? 0
+      setIndex(tab)
+    }, [route.params])
 
     return (
       <Box flex="1" backgroundColor={'#ffffff'}>
@@ -42,6 +51,7 @@ export const Incident = withForwardedNavigationParams<MainTabsScreenProps<'Incid
         </Center>
 
         <TabView
+          lazy
           navigationState={{ index, routes }}
           renderScene={({ route }) => {
             return SceneMapComponent(route.key as any)

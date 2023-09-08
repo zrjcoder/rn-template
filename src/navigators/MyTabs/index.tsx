@@ -8,6 +8,7 @@ import {
   Contact,
   Filter,
 } from '@/screens'
+import { UserInfoProps } from '@/store/user'
 
 export const myTabs = [
   {
@@ -70,7 +71,7 @@ export const myTabs = [
 
 // 警情模块下页面路由
 export type MyTabsParamList = {
-  Profile: undefined
+  Profile: UserInfoProps
   Password: undefined
   Update: undefined
   Car: undefined

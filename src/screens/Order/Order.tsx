@@ -34,7 +34,6 @@ export function Order() {
       <TabPage
         routeScene={routes}
         renderScene={({ route }) => {
-          console.log(route)
           return <OrderList params={params} status={route.key} />
         }}
       />

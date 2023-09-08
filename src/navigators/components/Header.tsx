@@ -11,6 +11,7 @@ export function Header(params: NativeStackHeaderProps) {
         bg={'#266EFF'}
         h={'40px'}
         // pb={'10px'}
+        borderBottomColor={'red.100'}
         justifyContent={'space-between'}
         alignItems={'center'}>
         <Box alignItems={'flex-start'} flex={1}>

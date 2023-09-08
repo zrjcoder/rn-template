@@ -1,8 +1,11 @@
 import React from 'react'
+import { useNavigation } from '@react-navigation/native'
+
 import { InfoCard, InfoHeader } from '../Incident/components'
 import { useLazyUpdateMessageQuery } from '@/services'
 import { MessageTypes, type MessageTypeProps } from '@/store/user/value'
 import { Toast } from '@/components'
+import { RootStackScreenProps } from '@/navigators/types'
 
 export type MessageItemProps = {
   item: {
@@ -14,10 +17,12 @@ export type MessageItemProps = {
     gid: string
     remark: string
   }
-  onPress: (item: MessageItemProps['item']) => void
+  onPress: () => void
 }
 
 export function MessageItem({ item, onPress }: MessageItemProps) {
+  const navigation = useNavigation<RootStackScreenProps<'Detail'>>()
+
   const [updateMessage, { isFetching }] = useLazyUpdateMessageQuery()
 
   const tag = MessageTypes.filter((i) => i.code === item?.msgType)[0]?.value ?? ''
@@ -45,27 +50,24 @@ export function MessageItem({ item, onPress }: MessageItemProps) {
     />
   )
 
-  async function updateMessageStatus() {
-    if (item?.readStatus === 1) {
-      onPress(item)
-      return
-    }
+  function updateMessageStatus() {
+    onPress()
 
-    try {
-      const result = await updateMessage({
-        gid: item?.gid,
-        readStatus: 1,
-        remark: item?.remark,
-      })
+    navigation.navigate('Detail', {
+      data: item,
+    })
 
-      const { resCode } = result?.data ?? {}
-      if (resCode === '00000') {
-        onPress(item)
-      } else {
+    // 未读
+    if (item?.readStatus === 0) {
+      try {
+        updateMessage({
+          gid: item?.gid,
+          readStatus: 1,
+          remark: item?.remark,
+        })
+      } catch (error) {
         Toast.error('更新状态失败')
       }
-    } catch (error) {
-      Toast.error('更新状态失败')
     }
   }
 }

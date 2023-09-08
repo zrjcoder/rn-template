@@ -27,6 +27,6 @@ export const incidentTabs = [
 // 警情模块下页面路由
 export type IncidentTabsParamList = {
   Scene: { data: any; refresh?: () => void }
-  Case: { id: string; code: string }
+  Case: { data: any }
   Detail: { data: any }
 }

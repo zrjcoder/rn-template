@@ -23,7 +23,7 @@ export function OrderBox({
       {title && <Title title={title} />}
       {person && <Person person={person} />}
 
-      <InfoBox leftWidth={'40%'} rightWidth="60%" data={data} info={info} />
+      <InfoBox leftWidth={'30%'} rightWidth="70%" data={data} info={info} />
 
       {children}
     </Card>

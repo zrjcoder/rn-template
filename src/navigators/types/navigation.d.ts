@@ -24,7 +24,7 @@ export type RootStackScreenProps<T extends keyof RootStackParamList> =
 // 底部按钮路由
 export type MainTabsParamList = {
   Home: undefined
-  Incident: undefined
+  Incident: { tab: number }
   Order: undefined
   Work: undefined
   My: undefined

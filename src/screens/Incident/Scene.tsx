@@ -15,6 +15,7 @@ import {
 import { useUpdateTaskMutation, type PoliceTypeProps } from '@/services'
 import { MapButtons } from './components/MapButtons'
 import { RootStackScreenProps, IncidentTabsScreenProps } from '@/navigators/types'
+import { makePhoneCall } from '@/util'
 
 export function Scene() {
   const navigation = useNavigation<RootStackScreenProps<'Scene'>>()
@@ -85,16 +86,15 @@ export function Scene() {
 
       <MapButtons
         isLoading={isLoading}
-        leftPress={() => {}}
+        leftPress={() => {
+          makePhoneCall(item?.bjdh)
+        }}
         centerPress={async () => {
           const isSuccess = await updateTask('reach')
 
           if (isSuccess) {
             Toast.success('操作成功！')
-            navigation.navigate('Case', {
-              id,
-              code,
-            })
+            navigation.navigate('Case', { data })
           }
         }}
         rightPress={() => {}}

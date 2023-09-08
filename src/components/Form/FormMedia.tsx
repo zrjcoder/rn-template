@@ -1,5 +1,5 @@
 import React, { useRef, useImperativeHandle, forwardRef } from 'react'
-import { Box, Image, HStack, Text, Toast } from 'native-base'
+import { Box, Image, HStack, Text, Toast, IBoxProps } from 'native-base'
 
 import { Button as ButtonBox, Preview, type PreviewHandle } from '@/components'
 import { permission } from '@/util'
@@ -30,6 +30,7 @@ export const FormMedia = forwardRef<FormMediaHandle, FormMediaProps>(
       <Box>
         <HStack space={2} mb={2} flexWrap={'wrap'}>
           <Picker
+            mt={2}
             onPress={async () => {
               await permission(['android.permission.CAMERA'])
 
@@ -72,7 +73,7 @@ export const FormMedia = forwardRef<FormMediaHandle, FormMediaProps>(
   }
 )
 
-function Picker({ onPress }: { onPress: () => void }) {
+function Picker({ onPress, ...props }: { onPress: () => void } & IBoxProps) {
   return (
     <ButtonBox isScale onPress={onPress}>
       <Box
@@ -80,7 +81,8 @@ function Picker({ onPress }: { onPress: () => void }) {
         bg={'#F7F8FA'}
         borderRadius={'xs'}
         justifyContent={'center'}
-        alignItems={'center'}>
+        alignItems={'center'}
+        {...props}>
         <Image
           size={'22px'}
           resizeMode="cover"

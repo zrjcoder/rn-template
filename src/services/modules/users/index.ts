@@ -12,8 +12,23 @@ export const userApi = api.injectEndpoints({
         body,
       }),
     }),
+    getUserInfo: build.mutation<any, any>({
+      query: (body) => ({
+        url: '/auth/service/passportInfo/findPassportInfoByConditionInList',
+        method: 'POST',
+        body,
+      }),
+    }),
+    feedback: build.mutation<any, any>({
+      query: (body) => ({
+        url: '/dispatch/adviceBox/save',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useAuthorizeMutation } = userApi
+export const { useAuthorizeMutation, useGetUserInfoMutation, useFeedbackMutation } =
+  userApi

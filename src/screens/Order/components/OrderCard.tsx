@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { TCard } from '@/components/home'
-import { IBoxProps } from 'native-base'
+import { Box, IBoxProps } from 'native-base'
 
 export function OrderCard({
   children,
@@ -10,6 +10,7 @@ export function OrderCard({
 }: { title: string; children: React.ReactNode } & IBoxProps) {
   return (
     <TCard title={title} style={{}} px={0} py={0} mt={0} mb={1} {...props}>
+      <Box my={1 / 2} />
       {children}
     </TCard>
   )

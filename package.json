@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "clear": "cd android && ./gradlew clean"
+    "clear": "cd android && ./gradlew clean",
+    "install": "adb install /Users/zhangrujie/Work/police-mobile/android/app/build/outputs/apk/release/app-release.apk",
+    "open": "open android/app/build/outputs/apk/release/"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.5.7",

@@ -13,35 +13,11 @@ import { useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 
 import { RootStackScreenProps } from '@/navigators/types'
-import { setToken } from '@/store/user'
+import { setToken, setUserInfo } from '@/store/user'
 import { Card, Icons, Toast } from '@/components'
-import { useAuthorizeMutation } from '@/services'
+import { useAuthorizeMutation, useGetUserInfoMutation } from '@/services'
 import { safeFetch } from '@/util'
-// let ws = null
 export function Login() {
-  // React.useEffect(() => {
-  //   ws = new WebSocket(
-  //     // 'ws://172.19.45.72:29099?token=6b48baee-10ed-41a6-a1c8-22fa54eb95b4'
-  //     'http://172.19.45.72:18455/auth/service/websocket/1234'
-  //   )
-
-  //   console.log(ws.readyState)
-
-  //   ws.addEventListener('open', function (event) {
-  //     console.log('open: ', event)
-  //   })
-
-  //   ws.addEventListener('close', (event) => {
-  //     console.log('close: ', event)
-  //   })
-
-  //   ws.addEventListener('error', (event) => {
-  //     console.log('error: ', event)
-  //   })
-  //   ws.addEventListener('message', (event) => {
-  //     console.log('message: ', event)
-  //   })
-  // }, [])
   const navigation = useNavigation<RootStackScreenProps<'Login'>>()
 
   const [showPwd, setShowPwd] = React.useState(false)
@@ -51,6 +27,7 @@ export function Login() {
   })
 
   const [authorize, { isLoading }] = useAuthorizeMutation()
+  const [getUserInfo] = useGetUserInfoMutation()
   const dispatch = useDispatch()
 
   return (
@@ -81,12 +58,6 @@ export function Login() {
           resizeMode="contain"
         />
         <Card>
-          {/* <Button
-            onPress={() => {
-              console.log(ws)
-            }}>
-            dudu
-          </Button> */}
           <IconInput
             value={state.userName}
             InputLeftElement={Icons.avatar}
@@ -127,11 +98,11 @@ export function Login() {
           />
           <Divider />
 
-          <IconInput
+          {/* <IconInput
             InputLeftElement={Icons.shield}
             placeholder="请输入验证码"
             onChangeText={() => {}}
-          />
+          /> */}
         </Card>
 
         <Box width={'full'} paddingX={4} mt={8}>
@@ -185,6 +156,26 @@ export function Login() {
 
     if (isSuccess && token) {
       dispatch(setToken(token))
+
+      getUserInfo({
+        userName: 'admin',
+      }).then((res: any) => {
+        const { data, resCode } = res.data
+
+        if (resCode === '00000') {
+          dispatch(
+            setUserInfo({
+              userName: data?.userInfos[0]?.userName,
+              userId: data?.userInfos[0]?.gid,
+              nickName: data?.userInfos[0]?.nickName, // 姓名
+              orgName: data?.userOrgInfos[0]?.fullName, // 公安局名、所在单位
+              orgGid: data?.userOrgInfos[0]?.orgGid, // 警号
+              tel: '暂无', // 电话号码
+              position: '暂无', // 职位
+            })
+          )
+        }
+      })
 
       navigation.navigate('MainTabs', { screen: 'Home' })
     }

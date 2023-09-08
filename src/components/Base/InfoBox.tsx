@@ -9,6 +9,7 @@ export type InfoBoxProps = {
   rightStyle?: IBoxProps
   leftWidth?: string
   rightWidth?: string
+  otherRightWidth?: any
   isDivider?: boolean
 } & IBoxProps
 
@@ -18,6 +19,7 @@ export function InfoBox({
   textStyle,
   infoStyle,
   leftWidth = '27%',
+  otherRightWidth = {},
   rightWidth = '75%',
   isDivider = false,
   rightStyle = {},
@@ -49,7 +51,7 @@ export function InfoBox({
                 </Box>
 
                 <Box
-                  width={typeof data[key] === 'object' ? {} : rightWidth}
+                  width={typeof data[key] === 'object' ? otherRightWidth : rightWidth}
                   maxWidth={rightWidth}
                   justifyContent={'center'}
                   {...rightStyle}

@@ -12,9 +12,10 @@ import {
   FixedButton,
 } from '@/components/home'
 import { InfoBox, type DialogHandle, Toast } from '@/components'
-import { convertIncidentDataToShow, executeAfterDelay } from '@/util'
+import { convertIncidentDataToShow, executeAfterDelay, makePhoneCall } from '@/util'
 import { useDisposalTask } from './hooks'
 import { RootStackScreenProps, IncidentTabsScreenProps } from '@/navigators/types'
+import { useFetchTaskDetailQuery } from '@/services'
 
 export function Detail() {
   const navigation = useNavigation<RootStackScreenProps<'Detail'>>()
@@ -22,11 +23,14 @@ export function Detail() {
   const route = useRoute<IncidentTabsScreenProps<'Detail'>['route']>()
   const paramsData = route?.params?.data
 
-  const data = {
-    ...paramsData,
-    jjdbGab: paramsData?.dataInfo,
-  }
-  const item = convertIncidentDataToShow(data?.dataInfo)
+  const { data: taskDetail } = useFetchTaskDetailQuery({
+    jjdbh: paramsData?.jjdbh,
+    type: 'self',
+  })
+
+  const data = taskDetail?.data
+
+  const item = convertIncidentDataToShow(data?.dataInfo || data?.jjdbGab)
 
   const alarmDialogRef = useRef<DialogHandle>(null)
   const immediateDialogRef = useRef<ImmediateResHandle>(null)
@@ -35,7 +39,9 @@ export function Detail() {
 
   return (
     <VStack flex={1}>
-      <FixedButton isLoading={isLoading} onPress={handleDisposal} />
+      {data?.feedBackStatus === 0 && (
+        <FixedButton isLoading={isLoading} onPress={handleDisposal} />
+      )}
 
       <ScrollView showsVerticalScrollIndicator={false} mb={4}>
         <Alarm
@@ -50,10 +56,13 @@ export function Detail() {
               immediateDialogRef.current?.countDownStart()
               executeAfterDelay(() => {
                 navigation.navigate('Scene', {
-                  data,
+                  data: taskDetail?.data,
                 })
               })
             }
+          }}
+          onRightPress={() => {
+            makePhoneCall(data?.jjdbGab?.bjdh)
           }}
         />
         <Immediate ref={immediateDialogRef} />
@@ -65,7 +74,10 @@ export function Detail() {
 
         <TCard title="出警流程">
           <Box mt={3} />
-          <CaseProcess />
+          <CaseProcess
+            flowList={data?.flowList ?? []}
+            feedbackList={data?.feedbackList ?? []}
+          />
         </TCard>
       </ScrollView>
     </VStack>

@@ -67,7 +67,6 @@ export async function safeFetch(
 ): Promise<any> {
   try {
     const result: any = await func(params)
-    // Toast.error(JSON.stringify(result))
 
     if (result?.data?.resCode === '00000') {
       return {
@@ -75,7 +74,7 @@ export async function safeFetch(
         data: result?.data?.data,
       }
     } else {
-      Toast.error(result?.data?.resMsg)
+      Toast.error(result?.data?.resMsg ?? '出错啦')
       return {
         isSuccess: false,
         data: null,
@@ -84,4 +83,16 @@ export async function safeFetch(
   } catch {
     Toast.error('出错了请联系管理员！')
   }
+}
+
+export function formatTime(time: number): string {
+  const date = new Date(time)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const seconds = String(date.getSeconds()).padStart(2, '0')
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 }

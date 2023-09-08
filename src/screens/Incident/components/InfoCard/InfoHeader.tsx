@@ -54,6 +54,12 @@ export function InfoHeader({
         <Box>{rightButton}</Box>
       </HStack>
 
+      {data?.content && (
+        <HStack mt={2}>
+          <Box>{data?.content}</Box>
+        </HStack>
+      )}
+
       <HStack justifyContent={'space-between'} mt={2}>
         <Box
           _text={{

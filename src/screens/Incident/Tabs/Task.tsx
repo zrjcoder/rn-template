@@ -7,7 +7,7 @@ import { Toast } from '@/components'
 import { useLazyFetchTaskListQuery } from '@/services'
 import { Alarm, Immediate, type ImmediateResHandle } from '../components/Dialog'
 import { type RootStackScreenProps } from '@/navigators/types'
-import { executeAfterDelay } from '@/util'
+import { executeAfterDelay, makePhoneCall } from '@/util'
 
 export const Task = ({ params }: { params: TaskListParamsProps }) => {
   const navigation = useNavigation<RootStackScreenProps<'Scene'>>()
@@ -23,7 +23,7 @@ export const Task = ({ params }: { params: TaskListParamsProps }) => {
   const getData = useCallback(
     (params: any = {}) => {
       fetchTaskList({
-        condition: { receiveStatus: 0, selType: 'todo' },
+        condition: { receiveStatus: 0, selType: 'todo', type: 'case' },
         ...params,
       })
     },
@@ -57,7 +57,9 @@ export const Task = ({ params }: { params: TaskListParamsProps }) => {
             })
           }
         }}
-        onRightPress={() => {}}
+        onRightPress={(data) => {
+          makePhoneCall(data?.dataInfo?.bjdh)
+        }}
       />
       <Immediate ref={immediateDialogRef} />
       <TaskList

@@ -36,19 +36,17 @@ export function MainTabs() {
         name="Home"
         component={Home}
         options={{
+          headerShown: false,
           tabBarLabel: '首页',
-          headerTitle: '首页',
-          ...headerStyles,
-          tabBarLabelStyle,
+          // headerTitle: '',
+          // ...headerStyles,
+          // tabBarLabelStyle,
           headerRight: HeaderButton,
           tabBarIcon: ({ focused, size }) =>
             focused ? (
-              <TabBarIcon
-                size={size}
-                source={require('@/assets/tab/police-active.png')}
-              />
+              <TabBarIcon size={size} source={require('@/assets/tab/home-active.png')} />
             ) : (
-              <TabBarIcon size={size} source={require('@/assets/tab/police.png')} />
+              <TabBarIcon size={size} source={require('@/assets/tab/home.png')} />
             ),
         }}
       />
@@ -80,6 +78,7 @@ export function MainTabs() {
           tabBarLabel: '指令',
           ...headerStyles,
           tabBarLabelStyle,
+          headerRight: HeaderButton,
           tabBarIcon: ({ focused, size }) =>
             focused ? (
               <TabBarIcon size={size} source={require('@/assets/tab/order-active.png')} />
@@ -112,6 +111,7 @@ export function MainTabs() {
           tabBarLabel: '我的',
           ...headerStyles,
           tabBarLabelStyle,
+          headerRight: HeaderButton,
           tabBarIcon: ({ focused, size }) =>
             focused ? (
               <TabBarIcon size={size} source={require('@/assets/tab/my-active.png')} />

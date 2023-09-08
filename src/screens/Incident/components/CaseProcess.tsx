@@ -1,7 +1,13 @@
 import React from 'react'
 import { Box, VStack, HStack, Text, Heading, Image } from 'native-base'
 
-export function CaseProcess() {
+export function CaseProcess({
+  flowList,
+  feedbackList,
+}: {
+  flowList: any[]
+  feedbackList: any[]
+}) {
   return (
     <Box>
       {process.map((item, index) => {
@@ -36,8 +42,7 @@ export function CaseProcess() {
                 py={2}
                 mt={2}
                 mb={6}>
-                <Text mb={1}>接警时间：2023.5.1 17.25</Text>
-                <Text>接警单位：市110接警中心</Text>
+                {renderProcess(item)}
               </VStack>
             </HStack>
           </Box>
@@ -45,6 +50,51 @@ export function CaseProcess() {
       })}
     </Box>
   )
+
+  function renderProcess(item: any) {
+    const { id, label } = item
+
+    // 接警、受理、派警
+    if ([0, 1, 2].includes(id)) {
+      return (
+        <Box>
+          <Text mb={1}>{`${label}时间：${flowList[id]?.time ?? ''}`}</Text>
+          <Text>{`${label}单位：${flowList[id]?.dw ?? ''}`}</Text>
+        </Box>
+      )
+    }
+    // 出警、到场、取消
+    else if ([3, 4, 5].includes(id)) {
+      const polices = flowList[id]?.child ?? []
+      return (
+        <Box>
+          <Text mb={1}>{`${label}时间：${flowList[id]?.time ?? ''}`}</Text>
+          <HStack>
+            <Box>{`${label}民警：`}</Box>
+            <Box>
+              {polices.map((police: any, index: number) => {
+                return (
+                  <Text key={police?.mc + index}>{`${police?.mc ?? ''} ${
+                    police?.time ?? ''
+                  }`}</Text>
+                )
+              })}
+            </Box>
+          </HStack>
+        </Box>
+      )
+    }
+    // 反馈
+    else {
+      const feedback = feedbackList[0]
+      return (
+        <Box>
+          <Text mb={1}>{`${label}时间：${feedback?.time ?? ''}`}</Text>
+          <Text>{`${label}内容：${feedback?.dw ?? ''}`}</Text>
+        </Box>
+      )
+    }
+  }
 }
 
 const process = [
@@ -66,10 +116,14 @@ const process = [
   },
   {
     id: 4,
-    label: '到场',
+    label: '出警',
   },
   {
     id: 5,
+    label: '到场',
+  },
+  {
+    id: 6,
     label: '反馈',
   },
 ]

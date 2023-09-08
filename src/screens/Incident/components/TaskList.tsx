@@ -6,7 +6,7 @@ import { RootStackScreenProps } from '@/navigators/types'
 import { FlatList, type FlatListHandle, FlatListParamsProps } from '@/components'
 import { useUpdateTaskMutation, type PoliceTypeProps } from '@/services'
 import { TaskItem, TButton } from '.'
-import { convertIncidentDataToShow, safeFetch } from '@/util'
+import { convertIncidentDataToShow, makePhoneCall, safeFetch } from '@/util'
 
 export type TaskListParamsProps = {
   condition?: {
@@ -57,7 +57,9 @@ export const TaskList = forwardRef(
             return (
               <TaskItem
                 item={convertIncidentDataToShow(item?.jjdbGab)}
-                leftPress={() => {}}
+                leftPress={() => {
+                  makePhoneCall(item?.jjdbGab?.bjdh)
+                }}
                 centerButton={
                   <TButton
                     w={104}

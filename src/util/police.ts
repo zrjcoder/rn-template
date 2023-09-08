@@ -24,6 +24,38 @@ export function convertIncidentDataToShow(item: any) {
   return {}
 }
 
+export function orderTagFromType(type: 'warn' | 'escapee') {
+  if (type === 'escapee') {
+    return {
+      tag: '在逃人员预警',
+      title: '在逃人员',
+      rightTag: {
+        label: '在逃人员',
+        color: '#FA2001',
+      },
+    }
+  } else if (type === 'warn') {
+    return {
+      tag: '重点人员预警',
+      title: '重点人员',
+      rightTag: {
+        label: '重点人员',
+        color: '#FB7904',
+      },
+    }
+  } else if (type === 'compose') {
+    return {
+      tag: '合成作战',
+      title: '标题',
+      rightTag: {
+        label: '紧急',
+        color: '#FA2001',
+      },
+    }
+  }
+  return {}
+}
+
 export const TaskLevel: any = {
   '01': {
     label: '一级',

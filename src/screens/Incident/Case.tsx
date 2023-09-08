@@ -1,26 +1,43 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useRef } from 'react'
-import { TouchableNativeFeedback } from 'react-native'
-import { ScrollView, Box, HStack } from 'native-base'
+import { LogBox } from 'react-native'
+import { ScrollView, Box } from 'native-base'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
 
-import { FormMedia, FormSubmit, type FormMediaHandle } from '@/components'
-import { FormCase, TCard, FormVoice, FormCaseHandle, FormVoiceHandle } from './components'
+import { FormMedia, FormSubmit, type FormMediaHandle, Toast } from '@/components'
+import {
+  FormCases,
+  TCard,
+  FormVoice,
+  FormCasesHandle,
+  FormVoiceHandle,
+} from './components'
 import { type RootStackScreenProps, IncidentTabsScreenProps } from '@/navigators/types'
+import { useSaveTaskMutation } from '@/services'
+import { safeFetch } from '@/util'
+import { UserState } from '@/store/user'
+
+LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 
 export function Case() {
   const navigation = useNavigation<RootStackScreenProps<'IncidentTabs'>>()
   const route = useRoute<IncidentTabsScreenProps<'Case'>['route']>()
-  const { id, code } = route?.params
+  const data = route?.params?.data
+
+  let userInfo = useSelector((state: { user: UserState }) => state.user.userInfo)
+
+  const [save, { isLoading }] = useSaveTaskMutation()
 
   const formMediaRef = useRef<FormMediaHandle>(null)
-  const formCaseRef = useRef<FormCaseHandle>(null)
+  const formCasesRef = useRef<FormCasesHandle>(null)
   const formVoiceRef = useRef<FormVoiceHandle>(null)
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <FormSubmit onPress={() => {}} />,
+      headerRight: () => <FormSubmit isLoading={isLoading} onPress={handleSubmit} />,
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation])
 
   return (
@@ -33,7 +50,7 @@ export function Case() {
         />
       </TCard>
 
-      <FormCase ref={formCaseRef} />
+      <FormCases ref={formCasesRef} />
 
       <TCard title={'处置结果'}>
         <FormVoice ref={formVoiceRef} />
@@ -42,4 +59,43 @@ export function Case() {
       <Box size={12} />
     </ScrollView>
   )
+
+  async function handleSubmit() {
+    if (formVoiceRef.current && formCasesRef.current) {
+      const { audios, text: feedBackMsg } = formVoiceRef.current?.getValues()
+      const { carList, peopleList } = formCasesRef.current?.getValues()
+
+      if (!feedBackMsg) {
+        Toast.error('处置结果不能为空！')
+        return
+      }
+
+      if (!formCasesRef.current?.isEmpty()) {
+        return
+      }
+
+      const saveParams = {
+        feedBackName: userInfo?.nickName,
+        feedBackUserId: userInfo?.userId,
+        jjdbh: data?.jjdbh,
+        type: 'case',
+        feedBackMsg: feedBackMsg,
+        // fileUrl: [], // 图片地址
+        // "feedBackMsgFile": [], // 语音文件地址
+        carList,
+        peopleList,
+      }
+
+      const { isSuccess } = await safeFetch(save, saveParams)
+      if (isSuccess) {
+        Toast.success('反馈成功！')
+        navigation.navigate('MainTabs', {
+          screen: 'Incident',
+          params: {
+            tab: 2,
+          },
+        })
+      }
+    }
+  }
 }
