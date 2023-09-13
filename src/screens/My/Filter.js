@@ -2,16 +2,11 @@ import React from 'react'
 import { Box } from 'native-base'
 import { UIManager, DeviceEventEmitter, findNodeHandle } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import { useRoute } from '@react-navigation/native'
 
 import { MessageFilter } from '@/components'
 import { setMessageTypes, clearMessageTypes, setMessageFilter } from '@/store/user'
 
 export function Filter() {
-  const route = useRoute()
-  const callback = route?.params?.callback
-  console.log(route.params)
-
   const ref = React.useRef(null)
 
   const messageTypes = useSelector((state) => state.user.messageTypes)
@@ -41,11 +36,7 @@ export function Filter() {
     DeviceEventEmitter.addListener('onUpdate', (data) => {
       dispatch(setMessageTypes(data))
     })
-
-    return () => {
-      callback()
-    }
-  }, [callback, dispatch])
+  }, [dispatch])
 
   return (
     <Box flex={1}>

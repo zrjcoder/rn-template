@@ -1,18 +1,14 @@
-import React, { useState, useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { Box } from 'native-base'
 import { useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 
-import {
-  TabPage,
-  type FlatListParamsProps,
-  Icons,
-  type TabPageHandle,
-} from '@/components'
+import { TabPage, Icons, type TabPageHandle } from '@/components'
 import { type UserState } from '@/store/user'
 import { MessageList } from './MessageList'
 import { type RootStackScreenProps } from '@/navigators/types'
 import { MessageTypeProps } from '@/store/user/value'
+import { SceneMap } from 'react-native-tab-view'
 
 export type MessageRouteProps = {
   key: MessageTypeProps['code']
@@ -26,22 +22,27 @@ export function Message() {
 
   let messageTypes = useSelector((state: { user: UserState }) => state.user.messageTypes)
 
-  const routes = format(messageTypes)
+  const [index, setIndex] = useState(0)
+  const [routes, setRoutes] = useState(format(messageTypes))
 
-  const [params, setParams] = useState<FlatListParamsProps>({
-    keyword: '',
-    pageSize: 20,
-    pageNum: 1,
-  })
+  React.useEffect(() => {
+    setRoutes(format(messageTypes))
+  }, [messageTypes])
 
   return (
     <Box flex="1" backgroundColor={'#ffffff'}>
       <TabPage
         ref={tabPageRef}
-        routeScene={routes as any}
-        renderScene={({ route }) => {
-          return <MessageList params={params} route={route as MessageRouteProps} />
-        }}
+        navigationState={{ index, routes } as any}
+        onIndexChange={setIndex}
+        renderScene={SceneMap({
+          case: MessageList,
+          compose: MessageList,
+          read: MessageList,
+          unread: MessageList,
+          warn: MessageList,
+          escapee: MessageList,
+        })}
       />
 
       <Box
@@ -52,12 +53,7 @@ export function Message() {
         px={2}
         justifyContent={'center'}
         onTouchStart={() => {
-          navigation.navigate('Filter', {
-            callback: () => {
-              console.log('messageTypes: ', messageTypes)
-              tabPageRef.current?.setMessageRoutes(format(messageTypes))
-            },
-          })
+          navigation.navigate('Filter')
         }}>
         {Icons.filterLight}
       </Box>

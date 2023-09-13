@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Box, Center } from 'native-base'
 
-import { TabPage, SearchBar, type FlatListParamsProps } from '@/components'
+import { TabPage, SearchBar, type FlatListParamsProps, DefaultTabBar } from '@/components'
 import { OrderList } from './components'
 
 export function Order() {
@@ -36,6 +36,7 @@ export function Order() {
         renderScene={({ route }) => {
           return <OrderList params={params} status={route.key} />
         }}
+        renderTabBar={(props) => <DefaultTabBar {...props} />}
       />
     </Box>
   )

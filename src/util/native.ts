@@ -1,4 +1,6 @@
-import { Linking } from 'react-native'
+import { Linking, NativeModules } from 'react-native'
+
+const { CommonModule } = NativeModules
 
 export function makePhoneCall(phoneNumber: string) {
   const url = `tel:${phoneNumber}`
@@ -11,4 +13,8 @@ export function makePhoneCall(phoneNumber: string) {
       }
     })
     .catch((error) => console.error('An error occurred:', error))
+}
+
+export function makePhoneSMS(phoneNumber: string) {
+  CommonModule.openSMS(phoneNumber)
 }

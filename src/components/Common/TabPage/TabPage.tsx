@@ -20,14 +20,16 @@ export type TabsProps = {
 
 export type TabViewProps = {
   onLoad?: (props: { setTabs: (tabs: TabsProps) => void }) => void
-  routeScene: {
+  routeScene?: {
     key: string
     title: string
   }[]
   styles?: IBoxProps
   pagerStyle?: StyleProp<ViewStyle>
 
-  renderScene: (props: SceneRendererProps & { route: { key: string } }) => React.ReactNode
+  renderScene?: (
+    props: SceneRendererProps & { route: { key: string } }
+  ) => React.ReactNode
 } & Partial<DefaultTabViewProps<any>>
 
 export type TabPageHandle = {
@@ -49,8 +51,8 @@ export const TabPage = React.forwardRef<TabPageHandle, TabViewProps>(
     ref
   ) => {
     const [index, setIndex] = useState(0)
-    const [tabs, setTabs] = useState<TabsProps>([])
     const [routes, setRoutes] = useState(routeScene)
+    const [tabs, setTabs] = useState<TabsProps>([])
 
     useEffect(() => {
       onLoad({ setTabs })
@@ -66,7 +68,7 @@ export const TabPage = React.forwardRef<TabPageHandle, TabViewProps>(
     return (
       <Box flex={1} bg="#ffffff" shadow={0} borderRadius={5} {...styles}>
         <DefaultTabView
-          lazy
+          // lazy
           style={{
             borderRadius: 5,
           }}
@@ -76,9 +78,9 @@ export const TabPage = React.forwardRef<TabPageHandle, TabViewProps>(
           renderTabBar={DefaultTabBar}
           renderScene={renderScene}
           pagerStyle={pagerStyle}
-          {...props}
           onIndexChange={setIndex}
           navigationState={{ index, routes } as any}
+          {...props}
         />
       </Box>
     )

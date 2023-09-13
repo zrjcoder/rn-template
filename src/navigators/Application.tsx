@@ -1,10 +1,10 @@
 import React from 'react'
-import { SafeAreaView, StatusBar } from 'react-native'
+import { SafeAreaView } from 'react-native'
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { MainTabs, incidentTabs, myTabs, orderTabs } from './index'
-import { Login, Message } from '@/screens'
+import { Login, Message, MessageDetail } from '@/screens'
 import { Map } from '@/components/Map'
 import { RootStackParamList } from './types'
 import { Header } from './components/Header'
@@ -16,12 +16,14 @@ const ApplicationNavigator = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer ref={navigationRef}>
-        <StatusBar animated={true} backgroundColor="#266EFF" barStyle={'light-content'} />
         <RootStack.Navigator
           initialRouteName="Login"
           screenOptions={{
             animation: 'slide_from_right',
             presentation: 'card',
+            statusBarColor: 'transparent',
+            navigationBarHidden: true,
+            statusBarTranslucent: true,
             header: Header,
           }}>
           <RootStack.Screen
@@ -62,7 +64,9 @@ const ApplicationNavigator = () => {
           <RootStack.Screen
             name="Login"
             component={Login as any}
-            options={{ headerShown: false }}
+            options={{
+              headerShown: false,
+            }}
           />
 
           <RootStack.Screen
@@ -71,6 +75,14 @@ const ApplicationNavigator = () => {
             options={{
               headerShown: true,
               headerTitle: '消息通知',
+            }}
+          />
+          <RootStack.Screen
+            name="MessageDetail"
+            component={MessageDetail as any}
+            options={{
+              headerShown: true,
+              headerTitle: '消息详情',
             }}
           />
         </RootStack.Navigator>

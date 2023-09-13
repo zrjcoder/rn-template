@@ -53,7 +53,7 @@ export function MessageItem({ item, onPress }: MessageItemProps) {
   function updateMessageStatus() {
     onPress()
 
-    navigation.navigate('Detail', {
+    navigation.navigate('MessageDetail', {
       data: item,
     })
 

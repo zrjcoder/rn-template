@@ -8,7 +8,8 @@ import {
 import { Toast } from '@/components'
 
 const baseUrl =
-  process.env.NODE_ENV === 'development' ? process.env.BASE_URL : process.env.BUILD_URL
+  // process.env.NODE_ENV === 'development' ? process.env.BASE_URL : process.env.BUILD_URL
+  'http://172.19.46.100:18805/'
 
 const baseQuery = fetchBaseQuery({
   baseUrl,

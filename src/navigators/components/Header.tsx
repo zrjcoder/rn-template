@@ -1,16 +1,24 @@
 import React from 'react'
+import { StatusBar } from 'react-native'
 import { Box, HStack } from 'native-base'
+import LinearGradient from 'react-native-linear-gradient'
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
+
+import { header_colors } from '@/util/color'
 
 export function Header(params: NativeStackHeaderProps) {
   const options = params?.options
 
   return (
-    options?.headerShown && (
+    <LinearGradient
+      colors={header_colors} // 渐变色数组
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      style={{
+        paddingTop: StatusBar.currentHeight,
+      }}>
       <HStack
-        bg={'#266EFF'}
         h={'40px'}
-        // pb={'10px'}
         borderBottomColor={'red.100'}
         justifyContent={'space-between'}
         alignItems={'center'}>
@@ -44,7 +52,7 @@ export function Header(params: NativeStackHeaderProps) {
           )}
         </Box>
       </HStack>
-    )
+    </LinearGradient>
   )
 }
 

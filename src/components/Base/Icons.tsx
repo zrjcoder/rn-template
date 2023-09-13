@@ -57,6 +57,18 @@ export const Icons = {
     source: require('@/assets/icons/close.png'),
     size: '3',
   }),
+  phone: Icon({
+    source: require('@/assets/icons/phone.png'),
+    size: '5',
+  }),
+  head: Icon({
+    source: require('@/assets/icons/head.png'),
+    size: '10',
+  }),
+  messageLight: Icon({
+    source: require('@/assets/icons/messageLight.png'),
+    size: '5',
+  }),
 }
 
 function Icon({ source, size = 4 }: IImageProps) {

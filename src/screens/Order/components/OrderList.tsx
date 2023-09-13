@@ -54,8 +54,7 @@ export function OrderList({ params, onLoad, status }: OrderListProps) {
     <Box flex={1} bg="#F5F7F9">
       <FlatList
         isFetching={isFetching}
-        // data={data?.data?.list ?? []}
-        data={data?.data?.list ?? [1]}
+        data={data?.data?.list ?? []}
         onRefresh={() => {
           getData(params)
         }}

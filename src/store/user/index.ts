@@ -55,7 +55,7 @@ const slice = createSlice({
       state.isMessageFilter = action.payload
     },
     setMessageTypes: (state, action: PayloadAction<MessageTypeProps[]>) => {
-      state.messageTypes = action.payload
+      state.messageTypes = action?.payload ?? MessageTypes
     },
     clearMessageTypes: (state) => {
       state.messageTypes = MessageTypes

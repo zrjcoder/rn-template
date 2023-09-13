@@ -12,6 +12,7 @@ export type RootStackParamList = {
 
   Login: undefined
   Message: undefined
+  MessageDetail: { data: any }
   Map: undefined
   NotFound: undefined
 } & IncidentTabsParamList &

@@ -17,6 +17,7 @@ import { type RootStackScreenProps, IncidentTabsScreenProps } from '@/navigators
 import { useSaveTaskMutation } from '@/services'
 import { safeFetch } from '@/util'
 import { UserState } from '@/store/user'
+import { useUploadFileMutation } from '@/services/modules/common'
 
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 
@@ -28,6 +29,8 @@ export function Case() {
   let userInfo = useSelector((state: { user: UserState }) => state.user.userInfo)
 
   const [save, { isLoading }] = useSaveTaskMutation()
+
+  const [upload] = useUploadFileMutation()
 
   const formMediaRef = useRef<FormMediaHandle>(null)
   const formCasesRef = useRef<FormCasesHandle>(null)
@@ -61,6 +64,22 @@ export function Case() {
   )
 
   async function handleSubmit() {
+    const formData = new FormData()
+    const medias = formMediaRef.current?.getMedias() ?? []
+    if (medias?.length > 0) {
+      const media = medias[0]
+      formData.append('file', {
+        uri: media?.uri,
+        type: media?.type,
+        name: media?.fileName,
+      })
+
+      fetch(`http://172.19.46.100:18805/fileService/apis/uploadFile`, {
+        method: 'post',
+        body: formData,
+      })
+    }
+
     if (formVoiceRef.current && formCasesRef.current) {
       const { audios, text: feedBackMsg } = formVoiceRef.current?.getValues()
       const { carList, peopleList } = formCasesRef.current?.getValues()

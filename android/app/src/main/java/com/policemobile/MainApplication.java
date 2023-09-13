@@ -10,6 +10,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
 
+import com.policemobile.common.CommonPackage;
 import com.policemobile.ocr.OCRReactPackage;
 import com.policemobile.iflytek.IFlyTekReactPackage;
 import com.policemobile.map.AMapPackage;
@@ -35,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
           packages.add(new OCRReactPackage());
           packages.add(new AMapPackage());
           packages.add(new UiPackage());
+          packages.add(new CommonPackage());
 
           System.out.println("Package: " + packages);
 

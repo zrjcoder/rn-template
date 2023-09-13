@@ -12,6 +12,7 @@ export const userApi = api.injectEndpoints({
         body,
       }),
     }),
+
     getUserInfo: build.mutation<any, any>({
       query: (body) => ({
         url: '/auth/service/passportInfo/findPassportInfoByConditionInList',
@@ -19,6 +20,8 @@ export const userApi = api.injectEndpoints({
         body,
       }),
     }),
+
+    // 意见反馈
     feedback: build.mutation<any, any>({
       query: (body) => ({
         url: '/dispatch/adviceBox/save',
@@ -26,9 +29,22 @@ export const userApi = api.injectEndpoints({
         body,
       }),
     }),
+
+    // 获取通讯录
+    getAddressBook: build.query<any, any>({
+      query: () => ({
+        url: '/auth/service/passportInfo/findAllPassportInfoInList',
+        method: 'GET',
+      }),
+    }),
   }),
+
   overrideExisting: false,
 })
 
-export const { useAuthorizeMutation, useGetUserInfoMutation, useFeedbackMutation } =
-  userApi
+export const {
+  useAuthorizeMutation,
+  useGetUserInfoMutation,
+  useFeedbackMutation,
+  useGetAddressBookQuery,
+} = userApi

@@ -12,7 +12,7 @@ export function CaseProcess({
     <Box>
       {process.map((item, index) => {
         return (
-          <Box ml={1}>
+          <Box key={item.id} ml={1}>
             <HStack>
               <Image
                 size={4}

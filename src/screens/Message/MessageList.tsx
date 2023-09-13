@@ -1,11 +1,10 @@
-import React, { useEffect, useCallback, useRef } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { Box } from 'native-base'
 
 import { FlatList, type FlatListParamsProps } from '@/components'
 import { useLazyFetchMessageListQuery } from '@/services'
 import { MessageItem } from './MessageItem'
 import { MessageRouteProps } from './Message'
-import { MessageDetail, MessageDetailHandle } from './MessageDetail'
 
 export type MessageListProps = {
   params?: FlatListParamsProps
@@ -15,8 +14,6 @@ export type MessageListProps = {
 
 export function MessageList({ params, route }: MessageListProps) {
   const [fetchMessageList, { data, isFetching }] = useLazyFetchMessageListQuery()
-
-  const detailRef = useRef<MessageDetailHandle>(null)
 
   const getData = useCallback(
     (params = {}) => {
@@ -48,7 +45,6 @@ export function MessageList({ params, route }: MessageListProps) {
 
   return (
     <Box flex={1} bg="#F5F7F9">
-      <MessageDetail ref={detailRef} />
       <FlatList
         isFetching={isFetching}
         data={data?.data?.list ?? []}

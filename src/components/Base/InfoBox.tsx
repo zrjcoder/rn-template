@@ -37,7 +37,7 @@ export function InfoBox({
         {keys.map((key, index) => {
           return (
             <VStack key={key}>
-              <HStack mt={2} justifyContent={'flex-start'} {...infoStyle}>
+              <HStack py={3} justifyContent={'flex-start'} {...infoStyle}>
                 <Box
                   width={leftWidth}
                   flexDirection="row"

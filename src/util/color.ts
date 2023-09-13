@@ -10,6 +10,8 @@ const level_three_dark = '#FFFDEB'
 const level_four_light = '#F5F8FE'
 const level_four_dark = '#DEE9FE'
 
+const header_colors = ['#266EFF', '#73ABFF']
+
 export {
   level_one_light,
   level_one_dark,
@@ -19,4 +21,5 @@ export {
   level_three_dark,
   level_four_light,
   level_four_dark,
+  header_colors,
 }

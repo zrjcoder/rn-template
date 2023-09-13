@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 
 export function Password() {
   const navigation = useNavigation()
+
   return (
     <Center>
       <Card pb={2}>

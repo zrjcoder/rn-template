@@ -10,7 +10,6 @@ export function HeaderButton() {
 
   return (
     <Button
-      mr={4}
       mb={1}
       isPressedStyle={false}
       isScale

@@ -10,7 +10,7 @@
     "start": "react-native start",
     "test": "jest",
     "clear": "cd android && ./gradlew clean",
-    "install": "adb install /Users/zhangrujie/Work/police-mobile/android/app/build/outputs/apk/release/app-release.apk",
+    "apk": "adb install /Users/zhangrujie/Work/police-mobile/android/app/build/outputs/apk/release/app-release.apk",
     "open": "open android/app/build/outputs/apk/release/"
   },
   "dependencies": {

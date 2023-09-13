@@ -8,6 +8,7 @@ import {
 import { Home, Incident, My, Order } from '../screens'
 import { MainTabsParamList } from './types'
 import { HeaderButton } from './IncidentTabs/HeaderButton'
+import { Header } from './components/Header'
 
 const Tab = createBottomTabNavigator<MainTabsParamList>()
 
@@ -31,16 +32,20 @@ const tabBarLabelStyle = {
 
 export function MainTabs() {
   return (
-    <Tab.Navigator initialRouteName="Home">
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        header: Header as any,
+      }}>
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
           headerShown: false,
           tabBarLabel: '首页',
-          // headerTitle: '',
-          // ...headerStyles,
-          // tabBarLabelStyle,
+          headerTitle: '',
+          ...headerStyles,
+          tabBarLabelStyle,
           headerRight: HeaderButton,
           tabBarIcon: ({ focused, size }) =>
             focused ? (

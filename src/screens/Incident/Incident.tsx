@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useWindowDimensions } from 'react-native'
-import { TabView, TabBar } from 'react-native-tab-view'
+import { TabView } from 'react-native-tab-view'
 import { withForwardedNavigationParams } from 'react-navigation-props-mapper'
-import { Box, Center, Text } from 'native-base'
+import { Box, Center } from 'native-base'
 
 import { MainTabsScreenProps } from '@/navigators/types'
 import { History, Task, Ongoing } from './Tabs'
-import { SearchBar, type FlatListParamsProps } from '@/components'
+import { SearchBar, type FlatListParamsProps, DefaultTabBar } from '@/components'
 import { useRoute } from '@react-navigation/native'
 
 export const Incident = withForwardedNavigationParams<MainTabsScreenProps<'Incident'>>()(
@@ -58,32 +58,7 @@ export const Incident = withForwardedNavigationParams<MainTabsScreenProps<'Incid
           }}
           onIndexChange={setIndex}
           initialLayout={{ width: layout.width }}
-          renderTabBar={(props) => (
-            <TabBar
-              {...props}
-              style={{
-                backgroundColor: '#ffffff',
-              }}
-              renderLabel={({ route, focused }) => (
-                <Text
-                  fontWeight={focused ? 'medium' : 'normal'}
-                  color={focused ? '#266EFF' : '#666666'}>
-                  {route.title}
-                </Text>
-              )}
-              contentContainerStyle={{
-                marginTop: -5,
-                marginBottom: -4,
-              }}
-              indicatorStyle={{
-                backgroundColor: '#266EFF',
-                width: 40,
-                height: 3,
-                borderRadius: 5,
-                left: (layout.width / 3 - 40) / 2,
-              }}
-            />
-          )}
+          renderTabBar={(props) => <DefaultTabBar {...props} />}
         />
       </Box>
     )

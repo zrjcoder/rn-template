@@ -7,6 +7,7 @@ import {
   Feedback,
   Contact,
   Filter,
+  ContactDetail,
 } from '@/screens'
 import { UserInfoProps } from '@/store/user'
 
@@ -23,6 +24,13 @@ export const myTabs = [
     component: Contact,
     options: {
       headerTitle: '警务通讯录',
+    },
+  },
+  {
+    name: 'ContactDetail',
+    component: ContactDetail,
+    options: {
+      headerTitle: '通讯录详情',
     },
   },
   {
@@ -78,5 +86,6 @@ export type MyTabsParamList = {
   Idcard: undefined
   Feedback: undefined
   Contact: undefined
-  Filter: { callback: () => void }
+  ContactDetail: { data: any }
+  Filter: undefined
 }
